@@ -1,0 +1,793 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Breadcrumbs from '~/components/Breadcrumbs.astro';
+import StatusBadge from '~/components/StatusBadge.astro';
+import { categories } from '~/lib/site';
+import { getCollection } from 'astro:content';
+
+const allSpec = await getCollection('spec', ({ data }) => !data.draft);
+
+// Sort entries by category and order
+const grouped: Record<string, typeof allSpec> = {};
+for (const e of allSpec) {
+  (grouped[e.data.category] ??= []).push(e);
+}
+for (const k of Object.keys(grouped)) {
+  grouped[k].sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title));
+}
+
+// Map database slugs to check.ts result slugs
+const checkMapping: Record<string, string> = {
+  // Foundations
+  'canonical-url': 'canonical-urls',
+  'meta-charset': 'character-encoding',
+  'meta-viewport': 'viewport',
+  'meta-description': 'meta-descriptions',
+  'title': 'title-tags',
+  'favicons': 'favicons',
+  'open-graph': 'open-graph',
+
+  // SEO
+  'robots-txt': 'robots-txt',
+  'xml-sitemaps': 'xml-sitemaps',
+  'meta-robots': 'meta-robots',
+  'heading-hierarchy': 'heading-hierarchy',
+  'breadcrumbs': 'breadcrumbs',
+  'structured-data': 'structured-data',
+
+  // Security
+  'https-tls': 'https-tls',
+  'hsts': 'hsts',
+  'content-security-policy': 'content-security-policy',
+  'x-content-type-options': 'x-content-type-options',
+  'referrer-policy': 'referrer-policy',
+  'permissions-policy': 'permissions-policy',
+  'frame-ancestors': 'frame-ancestors',
+  'security-txt': 'security-txt',
+  'dnssec': 'dnssec',
+  'caa-records': 'caa-records',
+
+  // Accessibility
+  'image-alt-text': 'image-alt-text',
+  'aria-usage': 'aria-usage',
+  'skip-links': 'skip-links',
+  'document-language': 'document-language',
+
+  // Performance
+  'compression': 'compression',
+  'cache-control': 'cache-control',
+  'http3': 'http3',
+  'lazy-loading': 'lazy-loading',
+  'preload-prefetch-preconnect': 'preload-prefetch-preconnect',
+  'resource-hints': 'resource-hints',
+  'speculation-rules': 'speculation-rules',
+  'view-transitions': 'view-transitions',
+
+  // Privacy
+  'global-privacy-control': 'global-privacy-control',
+  'privacy-policy': 'privacy-policy',
+  'third-party-scripts': 'third-party-scripts',
+
+  // Resilience
+  'pwa-manifest': 'pwa-manifest',
+  'offline-support': 'offline-support',
+  'error-pages': 'error-pages',
+
+  // Internationalisation
+  'hreflang': 'hreflang',
+  'idn-support': 'idn-support',
+  'lang-attribute': 'lang-attribute',
+  'rtl-support': 'rtl-support',
+
+  // Well-known & Agent Readiness
+  'change-password': 'change-password',
+  'apple-app-site-association': 'apple-app-site-association',
+  'assetlinks-json': 'assetlinks-json',
+  'nodeinfo': 'nodeinfo',
+  'openid-configuration': 'openid-configuration',
+  'webfinger': 'webfinger',
+  'api-catalog': 'api-catalog',
+  'llms-txt': 'llms-txt',
+  'webmcp': 'webmcp'
+};
+
+const specItems = allSpec.map((e) => {
+  const fileSlug = e.data.slug ?? e.id.split('/').pop()!;
+  const cleanSlug = fileSlug.endsWith('.md') ? fileSlug.slice(0, -3) : fileSlug;
+  const apiCheckKey = checkMapping[cleanSlug] || null;
+
+  return {
+    id: cleanSlug,
+    title: e.data.title,
+    category: e.data.category,
+    summary: e.data.summary,
+    status: e.data.status,
+    url: `/spec/${e.data.category}/${cleanSlug}/`,
+    apiCheckKey,
+  };
+});
+---
+
+<BaseLayout
+  title="Automated Website Auditor"
+  description="Audit your website against The Website Specification checklist. Run automated technical tests and complete manual checks to verify your site compliance."
+>
+  <div class="mx-auto max-w-5xl px-4 py-10">
+    <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Audit' }]} />
+
+    <header class="mt-5 pb-5">
+      <h1 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">Automated Website Auditor</h1>
+      <p class="mt-2 text-lg text-ink-600">
+        Run automated technical tests against your domain, then manually audit the remaining checklist items.
+      </p>
+    </header>
+
+    <!-- Audit Input Form -->
+    <div class="rounded-xl border border-ink-200 bg-white p-6 shadow-sm">
+      <form id="audit-form" class="flex flex-col gap-4 sm:flex-row">
+        <div class="relative flex-1">
+          <label for="domain-input" class="sr-only">Domain name</label>
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <svg class="h-5 w-5 text-ink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="domain-input"
+            required
+            placeholder="e.g. specification.website"
+            class="block w-full rounded-md border border-ink-300 bg-white py-2.5 pl-10 pr-3 text-ink-900 placeholder-ink-400 focus:border-accent-500 focus:outline-none focus:ring-1 focus:ring-accent-500 sm:text-sm"
+          />
+        </div>
+        <button
+          type="submit"
+          id="submit-btn"
+          class="inline-flex items-center justify-center rounded-md bg-accent-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-accent-800 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
+        >
+          <span id="btn-text">Audit Website</span>
+          <svg id="btn-spinner" class="ml-2 h-4 w-4 animate-spin hidden text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Local Mock Notice (shown when local API fails or is unavailable) -->
+      <div id="mock-notice" class="mt-4 hidden rounded-md bg-amber-50 p-3 border border-amber-200">
+        <div class="flex">
+          <div class="shrink-0">
+            <svg class="h-5 w-5 text-amber-600" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-semibold text-amber-800">Local Simulation Mode</h3>
+            <div class="mt-1 text-sm text-amber-700">
+              <p>The serverless API is offline (typical in local development). Showing simulation audit results for the entered domain.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audit Dashboard (Hidden by default) -->
+    <div id="dashboard" class="mt-8 hidden space-y-6">
+      <div class="rounded-xl border border-ink-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div class="flex-1 space-y-1">
+            <div class="flex items-center gap-3">
+              <h2 id="summary-domain" class="text-2xl font-bold text-ink-900">domain.com</h2>
+              <span id="scan-badge" class="inline-flex items-center rounded-full bg-accent-50 px-2.5 py-0.5 text-xs font-medium text-accent-700 ring-1 ring-inset ring-accent-200">Completed</span>
+            </div>
+            <p id="summary-time" class="text-sm text-ink-500">Scanned on: May 30, 2026</p>
+          </div>
+
+          <!-- Score Card -->
+          <div class="flex items-center gap-4 border-t border-ink-100 pt-4 md:border-t-0 md:pt-0">
+            <div class="relative h-20 w-20 shrink-0">
+              <!-- Radial Progress Circle -->
+              <svg class="h-full w-full" viewBox="0 0 36 36">
+                <path
+                  class="text-ink-100"
+                  stroke-width="3"
+                  stroke="currentColor"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  id="radial-progress-bar"
+                  class="text-accent-700 transition-all duration-500 ease-out"
+                  stroke-width="3"
+                  stroke-dasharray="0, 100"
+                  stroke-linecap="round"
+                  stroke="currentColor"
+                  fill="none"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span id="score-text" class="text-lg font-bold text-ink-900">0%</span>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-ink-900">Compliance Score</p>
+              <p id="score-fraction" class="text-xs text-ink-500">0 of 0 checks passed</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bar Details -->
+        <div class="mt-6 border-t border-ink-100 pt-6">
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div class="rounded-lg bg-emerald-50/50 p-3 border border-emerald-100 text-center">
+              <span id="count-passed" class="block text-2xl font-bold text-emerald-700">0</span>
+              <span class="text-xs font-semibold text-emerald-800 uppercase">Passed</span>
+            </div>
+            <div class="rounded-lg bg-red-50/50 p-3 border border-red-100 text-center">
+              <span id="count-failed" class="block text-2xl font-bold text-red-700">0</span>
+              <span class="text-xs font-semibold text-red-800 uppercase">Failed</span>
+            </div>
+            <div class="rounded-lg bg-amber-50/50 p-3 border border-amber-100 text-center">
+              <span id="count-warnings" class="block text-2xl font-bold text-amber-700">0</span>
+              <span class="text-xs font-semibold text-amber-800 uppercase">Warnings</span>
+            </div>
+            <div class="rounded-lg bg-ink-50 p-3 border border-ink-200 text-center">
+              <span id="count-manual" class="block text-2xl font-bold text-ink-700">0</span>
+              <span class="text-xs font-semibold text-ink-800 uppercase">Manual Pending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Action Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap gap-2" id="filter-buttons">
+          <button data-filter="all" class="rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm">All Items</button>
+          <button data-filter="passed" class="rounded-md border border-ink-200 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-ink-50">Passed</button>
+          <button data-filter="failed" class="rounded-md border border-ink-200 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-ink-50">Failed</button>
+          <button data-filter="warnings" class="rounded-md border border-ink-200 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-ink-50">Warnings</button>
+          <button data-filter="manual" class="rounded-md border border-ink-200 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-ink-50">Manual Checks</button>
+        </div>
+
+        <button
+          onclick="window.print()"
+          class="inline-flex items-center gap-1 rounded-md border border-ink-300 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-ink-50"
+        >
+          <svg class="h-4 w-4 text-ink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print Report
+        </button>
+      </div>
+
+      <!-- Categories & Items Container -->
+      <div id="results-container" class="space-y-8">
+        {categories.map((c) => {
+          const catItems = specItems.filter(item => item.category === c.slug);
+          if (!catItems.length) return null;
+          return (
+            <section data-category={c.slug} class="category-section rounded-xl border border-ink-200 bg-white overflow-hidden shadow-sm">
+              <div class="border-b border-ink-100 bg-ink-50/50 px-6 py-4">
+                <div class="flex items-baseline justify-between gap-4">
+                  <div>
+                    <h3 class="text-lg font-bold text-ink-900">{c.title}</h3>
+                    <p class="text-xs text-ink-600">{c.summary}</p>
+                  </div>
+                  <span class="category-badge rounded-md bg-ink-200 px-2 py-0.5 font-mono text-xs text-ink-800">
+                    <span class="cat-passed">0</span>/<span class="cat-total">{catItems.length}</span>
+                  </span>
+                </div>
+              </div>
+
+              <ul class="divide-y divide-ink-100">
+                {catItems.map((item) => (
+                  <li
+                    data-item-id={item.id}
+                    data-check-key={item.apiCheckKey}
+                    data-status-type={item.apiCheckKey ? 'pending' : 'manual'}
+                    class="audit-item px-6 py-4 transition hover:bg-ink-50/30"
+                  >
+                    <div class="flex items-start gap-4">
+                      <!-- Status Icon -->
+                      <div class="status-icon-container mt-1 shrink-0">
+                        <!-- Default Pending Icon -->
+                        <div class="pending-icon h-5 w-5 rounded-full border-2 border-ink-200 border-t-accent-700 animate-spin"></div>
+                        
+                        <!-- Manual Action Checkbox -->
+                        <div class="manual-checkbox-container hidden">
+                          <input
+                            type="checkbox"
+                            data-manual-checkbox={item.id}
+                            class="h-5 w-5 rounded border-ink-300 text-accent-700 focus:ring-accent-500 cursor-pointer"
+                            aria-label={`Mark manual item ${item.title} as verified`}
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Content -->
+                      <div class="flex-1 space-y-1">
+                        <div class="flex flex-wrap items-baseline gap-2">
+                          <a class="text-sm font-semibold text-ink-900 hover:text-accent-700" href={item.url} target="_blank">
+                            {item.title}
+                          </a>
+                          <StatusBadge status={item.status} />
+                        </div>
+                        <p class="text-sm text-ink-600">{item.summary}</p>
+                        
+                        <!-- Diagnostic Messages (for Automated Checks) -->
+                        <div class="diagnostic-area mt-2 hidden text-xs leading-relaxed">
+                          <!-- Filled by JS -->
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+
+  <!-- Built-in data representation passed to client-side JS -->
+  <script define:vars={{ specItems }} id="spec-data-payload"></script>
+</BaseLayout>
+
+<script>
+  // Ensure we operate only in the browser
+  document.addEventListener('DOMContentLoaded', () => {
+    const specItems = (window as any).specItems || [];
+    
+    // UI Selectors
+    const form = document.getElementById('audit-form') as HTMLFormElement;
+    const input = document.getElementById('domain-input') as HTMLInputElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+    const mockNotice = document.getElementById('mock-notice');
+    const dashboard = document.getElementById('dashboard');
+    const summaryDomain = document.getElementById('summary-domain');
+    const summaryTime = document.getElementById('summary-time');
+    
+    const countPassed = document.getElementById('count-passed');
+    const countFailed = document.getElementById('count-failed');
+    const countWarnings = document.getElementById('count-warnings');
+    const countManual = document.getElementById('count-manual');
+    const radialProgressBar = document.getElementById('radial-progress-bar');
+    const scoreText = document.getElementById('score-text');
+    const scoreFraction = document.getElementById('score-fraction');
+    const filterButtonsContainer = document.getElementById('filter-buttons');
+
+    let currentDomain = '';
+    let apiResults: any[] = [];
+    let activeFilter = 'all';
+
+    // Check if query parameter has domain
+    const urlParams = new URLSearchParams(window.location.search);
+    const domainParam = urlParams.get('domain');
+    if (domainParam) {
+      input.value = domainParam;
+      startAudit(domainParam);
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const domain = input.value.trim();
+      if (domain) {
+        // Update URL query param without full page reload
+        const newUrl = `${window.location.pathname}?domain=${encodeURIComponent(domain)}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+        startAudit(domain);
+      }
+    });
+
+    async function startAudit(domain: string) {
+      currentDomain = domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
+      
+      // Setup loading states
+      setLoading(true);
+      mockNotice?.classList.add('hidden');
+      dashboard?.classList.remove('hidden');
+      summaryDomain!.textContent = currentDomain;
+      summaryTime!.textContent = `Scanned on: ${new Date().toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })}`;
+
+      // Reset all items visual state to pending
+      document.querySelectorAll('.audit-item').forEach((el) => {
+        const itemEl = el as HTMLElement;
+        const checkKey = itemEl.getAttribute('data-check-key');
+        
+        // Remove status icons
+        itemEl.querySelectorAll('.status-badge-icon').forEach(icon => icon.remove());
+        const diagArea = itemEl.querySelector('.diagnostic-area') as HTMLElement;
+        diagArea.classList.add('hidden');
+        diagArea.innerHTML = '';
+        
+        if (checkKey) {
+          // Automated item
+          itemEl.setAttribute('data-status-type', 'pending');
+          const pIcon = itemEl.querySelector('.pending-icon') as HTMLElement;
+          pIcon.classList.remove('hidden');
+          const cbContainer = itemEl.querySelector('.manual-checkbox-container') as HTMLElement;
+          cbContainer.classList.add('hidden');
+        } else {
+          // Manual item
+          itemEl.setAttribute('data-status-type', 'manual');
+          const pIcon = itemEl.querySelector('.pending-icon') as HTMLElement;
+          pIcon.classList.add('hidden');
+          const cbContainer = itemEl.querySelector('.manual-checkbox-container') as HTMLElement;
+          cbContainer.classList.remove('hidden');
+          
+          // Hydrate from localStorage
+          const checkbox = cbContainer.querySelector('input') as HTMLInputElement;
+          const key = `spec-audit-manual-${currentDomain}-${itemEl.getAttribute('data-item-id')}`;
+          checkbox.checked = localStorage.getItem(key) === 'true';
+          updateManualItemStyle(itemEl, checkbox.checked);
+        }
+      });
+
+      updateScoreboard();
+
+      // Fire API fetch
+      try {
+        const checkApiUrl = `/api/check?domain=${encodeURIComponent(currentDomain)}`;
+        const res = await fetch(checkApiUrl);
+        if (!res.ok) {
+          throw new Error(`API returned HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        apiResults = data.results || [];
+        processApiResults(apiResults);
+      } catch (err) {
+        console.warn('API error, falling back to local simulation:', err);
+        mockNotice?.classList.remove('hidden');
+        // Wait 1.5s to simulate scan progress
+        await new Promise(r => setTimeout(r, 1500));
+        apiResults = generateMockResults(currentDomain);
+        processApiResults(apiResults);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function setLoading(isLoading: boolean) {
+      submitBtn.disabled = isLoading;
+      if (isLoading) {
+        btnText!.textContent = 'Auditing Site...';
+        btnSpinner!.classList.remove('hidden');
+      } else {
+        btnText!.textContent = 'Audit Website';
+        btnSpinner!.classList.add('hidden');
+      }
+    }
+
+    // SVG icons
+    const passIconSvg = `<svg class="status-badge-icon h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>`;
+    const failIconSvg = `<svg class="status-badge-icon h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/></svg>`;
+    const warnIconSvg = `<svg class="status-badge-icon h-5 w-5 text-amber-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>`;
+
+    function processApiResults(results: any[]) {
+      const resultsMap = new Map(results.map(r => [r.slug, r]));
+
+      document.querySelectorAll('.audit-item').forEach((el) => {
+        const itemEl = el as HTMLElement;
+        const checkKey = itemEl.getAttribute('data-check-key');
+        if (!checkKey) return; // Skip manual items
+
+        const matchingResult = resultsMap.get(checkKey);
+        const pIcon = itemEl.querySelector('.pending-icon') as HTMLElement;
+        pIcon.classList.add('hidden');
+
+        const iconContainer = itemEl.querySelector('.status-icon-container');
+        const diagArea = itemEl.querySelector('.diagnostic-area') as HTMLElement;
+
+        if (matchingResult) {
+          const outcome = matchingResult.result; // 'pass', 'fail', 'warning'
+          itemEl.setAttribute('data-status-type', outcome);
+          
+          // Set appropriate icon
+          if (outcome === 'pass') {
+            iconContainer!.insertAdjacentHTML('beforeend', passIconSvg);
+            itemEl.classList.remove('opacity-60');
+          } else if (outcome === 'fail') {
+            iconContainer!.insertAdjacentHTML('beforeend', failIconSvg);
+            itemEl.classList.remove('opacity-60');
+          } else {
+            iconContainer!.insertAdjacentHTML('beforeend', warnIconSvg);
+            itemEl.classList.remove('opacity-60');
+          }
+
+          // Populate diagnostic message
+          diagArea.innerHTML = `<span class="font-semibold uppercase tracking-wider text-[10px] ${
+            outcome === 'pass' ? 'text-emerald-700' : outcome === 'fail' ? 'text-red-700' : 'text-amber-700'
+          }">Diagnostic Output:</span> <span class="text-ink-700">${matchingResult.message}</span>`;
+          diagArea.classList.remove('hidden');
+        } else {
+          // If the API didn't return this result, mark as warning
+          itemEl.setAttribute('data-status-type', 'warning');
+          iconContainer!.insertAdjacentHTML('beforeend', warnIconSvg);
+          diagArea.innerHTML = `<span class="text-ink-500">Check skipped or not reported by backend API.</span>`;
+          diagArea.classList.remove('hidden');
+        }
+      });
+
+      updateScoreboard();
+    }
+
+    // Set up manual checkbox change events
+    document.querySelectorAll('[data-manual-checkbox]').forEach((cb) => {
+      cb.addEventListener('change', (e) => {
+        const target = e.target as HTMLInputElement;
+        const itemId = target.getAttribute('data-manual-checkbox');
+        const itemEl = target.closest('.audit-item') as HTMLElement;
+        
+        const key = `spec-audit-manual-${currentDomain}-${itemId}`;
+        localStorage.setItem(key, String(target.checked));
+        
+        updateManualItemStyle(itemEl, target.checked);
+        updateScoreboard();
+      });
+    });
+
+    function updateManualItemStyle(itemEl: HTMLElement, isChecked: boolean) {
+      if (isChecked) {
+        itemEl.setAttribute('data-status-type', 'manual-pass');
+        itemEl.classList.add('bg-emerald-50/10');
+      } else {
+        itemEl.setAttribute('data-status-type', 'manual');
+        itemEl.classList.remove('bg-emerald-50/10');
+      }
+    }
+
+    function updateScoreboard() {
+      const allItems = document.querySelectorAll('.audit-item');
+      let total = allItems.length;
+      let passed = 0;
+      let failed = 0;
+      let warnings = 0;
+      let manual = 0;
+
+      // Category level counters
+      const categoryCounters: Record<string, { passed: number, total: number }> = {};
+
+      allItems.forEach((el) => {
+        const itemEl = el as HTMLElement;
+        const cat = itemEl.closest('.category-section')?.getAttribute('data-category') || '';
+        
+        if (!categoryCounters[cat]) {
+          categoryCounters[cat] = { passed: 0, total: 0 };
+        }
+        categoryCounters[cat].total++;
+
+        const statusType = itemEl.getAttribute('data-status-type');
+        if (statusType === 'pass' || statusType === 'manual-pass') {
+          passed++;
+          categoryCounters[cat].passed++;
+        } else if (statusType === 'fail') {
+          failed++;
+        } else if (statusType === 'warning') {
+          warnings++;
+        } else if (statusType === 'manual' || statusType === 'pending') {
+          manual++;
+        }
+      });
+
+      // Update global counters
+      countPassed!.textContent = String(passed);
+      countFailed!.textContent = String(failed);
+      countWarnings!.textContent = String(warnings);
+      countManual!.textContent = String(manual);
+
+      // Update radial progress & score text
+      const score = total > 0 ? Math.round((passed / total) * 100) : 0;
+      scoreText!.textContent = `${score}%`;
+      scoreFraction!.textContent = `${passed} of ${total} items completed`;
+      radialProgressBar!.setAttribute('stroke-dasharray', `${score}, 100`);
+
+      // Update category badges
+      Object.keys(categoryCounters).forEach((cat) => {
+        const catEl = document.querySelector(`[data-category="${cat}"]`);
+        if (catEl) {
+          const passEl = catEl.querySelector('.cat-passed');
+          const totalEl = catEl.querySelector('.cat-total');
+          passEl!.textContent = String(categoryCounters[cat].passed);
+          totalEl!.textContent = String(categoryCounters[cat].total);
+
+          // Change badge color depending on completeness
+          const badge = catEl.querySelector('.category-badge');
+          if (categoryCounters[cat].passed === categoryCounters[cat].total) {
+            badge!.className = 'category-badge rounded-md bg-emerald-100 px-2 py-0.5 font-mono text-xs text-emerald-800';
+          } else {
+            badge!.className = 'category-badge rounded-md bg-ink-200 px-2 py-0.5 font-mono text-xs text-ink-800';
+          }
+        }
+      });
+
+      // Apply filter
+      applyActiveFilter();
+    }
+
+    // Filter Buttons logic
+    filterButtonsContainer?.addEventListener('click', (e) => {
+      const target = e.target as HTMLButtonElement;
+      const filter = target.getAttribute('data-filter');
+      if (!filter) return;
+
+      // Update button classes
+      filterButtonsContainer.querySelectorAll('button').forEach(btn => {
+        btn.className = 'rounded-md border border-ink-200 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:bg-ink-50';
+      });
+      target.className = 'rounded-md bg-ink-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm';
+
+      activeFilter = filter;
+      applyActiveFilter();
+    });
+
+    function applyActiveFilter() {
+      const allItems = document.querySelectorAll('.audit-item');
+      
+      allItems.forEach((el) => {
+        const itemEl = el as HTMLElement;
+        const statusType = itemEl.getAttribute('data-status-type');
+        let show = false;
+
+        if (activeFilter === 'all') {
+          show = true;
+        } else if (activeFilter === 'passed') {
+          show = (statusType === 'pass' || statusType === 'manual-pass');
+        } else if (activeFilter === 'failed') {
+          show = (statusType === 'fail');
+        } else if (activeFilter === 'warnings') {
+          show = (statusType === 'warning');
+        } else if (activeFilter === 'manual') {
+          show = (statusType === 'manual' || statusType === 'manual-pass');
+        }
+
+        if (show) {
+          itemEl.classList.remove('hidden');
+        } else {
+          itemEl.classList.add('hidden');
+        }
+      });
+
+      // Hide or show categories depending on if they have visible items
+      document.querySelectorAll('.category-section').forEach((catSection) => {
+        const section = catSection as HTMLElement;
+        const visibleItems = section.querySelectorAll('.audit-item:not(.hidden)').length;
+        if (visibleItems === 0) {
+          section.classList.add('hidden');
+        } else {
+          section.classList.remove('hidden');
+        }
+      });
+    }
+
+    // Mock Result Generator for Localhost/offline testing
+    function generateMockResults(domain: string) {
+      return [
+        // Foundations
+        { slug: 'https-tls', result: 'pass', message: `Redirected HTTP connection to HTTPS successfully for ${domain}.` },
+        { slug: 'hsts', result: 'pass', message: 'Strict-Transport-Security header present: max-age=31536000; includeSubDomains.' },
+        { slug: 'x-content-type-options', result: 'pass', message: 'X-Content-Type-Options: nosniff header detected.' },
+        { slug: 'content-security-policy', result: 'warning', message: 'No CSP header or meta tag found in root response. We recommend configuring a Content Security Policy.' },
+        { slug: 'referrer-policy', result: 'pass', message: 'Referrer-Policy header present: strict-origin-when-cross-origin' },
+        { slug: 'permissions-policy', result: 'warning', message: 'Permissions-Policy header is missing.' },
+        { slug: 'frame-ancestors', result: 'pass', message: 'Frame options configured correctly (X-Frame-Options: DENY).' },
+        { slug: 'security-txt', result: 'pass', message: 'Endpoint found at /.well-known/security.txt (HTTP 200).' },
+        { slug: 'dnssec', result: 'pass', message: 'DNSSEC AD flag returned true. DNS zone is cryptographically signed.' },
+        { slug: 'caa-records', result: 'pass', message: 'CAA DNS records found on DNS queries (1 record).' },
+        { slug: 'doctype', result: 'pass', message: 'Modern HTML5 doctype declaration (<!doctype html>) matches.' },
+        { slug: 'html-lang', result: 'pass', message: 'Found language attribute in HTML header: lang="nl"' },
+        { slug: 'character-encoding', result: 'pass', message: 'UTF-8 character encoding declared.' },
+        { slug: 'viewport', result: 'pass', message: 'Viewport meta tag found (width=device-width, initial-scale=1.0).' },
+        { slug: 'canonical-urls', result: 'pass', message: `Canonical URL link tag found: https://${domain}/` },
+        { slug: 'favicons', result: 'pass', message: 'Favicon found at root /favicon.ico (200 OK).' },
+        { slug: 'open-graph', result: 'pass', message: 'Open Graph protocol metadata (og:title, og:image) found.' },
+
+        // SEO
+        { slug: 'title-tags', result: 'pass', message: `Title tag present: "${domain} — Portfolio"` },
+        { slug: 'meta-descriptions', result: 'pass', message: 'Description meta tag present with appropriate length.' },
+        { slug: 'meta-robots', result: 'warning', message: 'robots meta tag is missing (recommended).' },
+        { slug: 'twitter-cards', result: 'pass', message: 'Twitter card metadata found.' },
+        { slug: 'heading-hierarchy', result: 'pass', message: 'Exactly one <h1> tag found.' },
+        { slug: 'breadcrumbs', result: 'warning', message: 'No breadcrumbs structured data or breadcrumb navigation identified.' },
+        { slug: 'structured-data', result: 'pass', message: 'JSON-LD structured data block found.' },
+        { slug: 'robots-txt', result: 'pass', message: 'robots.txt found (HTTP 200).' },
+        { slug: 'xml-sitemaps', result: 'pass', message: 'Sitemap found at /sitemap.xml.' },
+
+        // Accessibility
+        { slug: 'image-alt-text', result: 'pass', message: 'Audited 12 images on the page: all contain non-empty alt attributes.' },
+        { slug: 'aria-usage', result: 'pass', message: 'Found 4 interactive elements with ARIA role or aria-* attributes.' },
+        { slug: 'skip-links', result: 'pass', message: 'Skip link ("Skip to content") found in header region.' },
+        { slug: 'document-language', result: 'pass', message: 'Document language declared in html lang attribute matches lang="nl".' },
+
+        // Performance
+        { slug: 'compression', result: 'pass', message: 'Response compressed using Brotli (br).' },
+        { slug: 'cache-control', result: 'pass', message: 'Cache-Control header configured: public, max-age=0, must-revalidate.' },
+        { slug: 'http3', result: 'pass', message: 'HTTP/3 support indicated via Alt-Svc header.' },
+        { slug: 'lazy-loading', result: 'pass', message: 'Found 8 off-screen images using loading="lazy".' },
+        { slug: 'preload-prefetch-preconnect', result: 'pass', message: 'Found preload tag for web fonts.' },
+        { slug: 'resource-hints', result: 'pass', message: 'Found preconnect links to Google Fonts.' },
+        { slug: 'speculation-rules', result: 'warning', message: 'Speculation Rules script block not found.' },
+        { slug: 'view-transitions', result: 'pass', message: 'View Transitions API meta tag or css rule found.' },
+
+        // Privacy
+        { slug: 'global-privacy-control', result: 'pass', message: 'Global Privacy Control configuration found at /.well-known/gpc.json (HTTP 200).' },
+        { slug: 'privacy-policy', result: 'pass', message: 'Privacy policy page link detected in footer.' },
+        { slug: 'third-party-scripts', result: 'warning', message: 'Detected 2 third-party scripts: Google Tag Manager, Stripe JS.' },
+
+        // Resilience
+        { slug: 'pwa-manifest', result: 'warning', message: 'No Web App Manifest link tag found.' },
+        { slug: 'offline-support', result: 'warning', message: 'No Service Worker registration detected.' },
+        { slug: 'error-pages', result: 'pass', message: 'Verified 404 behavior: random nonexistent pages return HTTP status 404.' },
+
+        // Internationalisation
+        { slug: 'hreflang', result: 'warning', message: 'No hreflang alternate language link tags found.' },
+        { slug: 'idn-support', result: 'pass', message: 'Domain is pure ASCII; IDN handling not required.' },
+        { slug: 'lang-attribute', result: 'pass', message: 'HTML lang attribute set to "nl".' },
+        { slug: 'rtl-support', result: 'warning', message: 'RTL layout styles or dir="rtl" attribute not found.' },
+
+        // Well-known & Agent Readiness
+        { slug: 'change-password', result: 'warning', message: 'Endpoint returned HTTP status 404. (Note: Only applicable if site has user logins).' },
+        { slug: 'llms-txt', result: 'warning', message: 'llms.txt not found (HTTP 404).' },
+        { slug: 'apple-app-site-association', result: 'warning', message: 'Endpoint returned HTTP status 404. (Optional).' },
+        { slug: 'assetlinks-json', result: 'warning', message: 'Endpoint returned HTTP status 404. (Optional).' },
+        { slug: 'nodeinfo', result: 'warning', message: 'Endpoint returned HTTP status 404. (Optional).' },
+        { slug: 'openid-configuration', result: 'warning', message: 'Endpoint returned HTTP status 404. (Optional).' },
+        { slug: 'webfinger', result: 'warning', message: 'Endpoint returned HTTP status 404. (Optional).' },
+        { slug: 'api-catalog', result: 'warning', message: 'Endpoint returned HTTP status 404. (Optional).' },
+        { slug: 'webmcp', result: 'warning', message: 'WebMCP JavaScript integration not detected.' }
+      ];
+    }
+  });
+</script>
+
+<style>
+  /* Custom print style */
+  @media print {
+    body {
+      background: white !important;
+      color: black !important;
+    }
+    header, #audit-form, #filter-buttons, button, .skip-link, footer {
+      display: none !important;
+    }
+    #dashboard {
+      display: block !important;
+      margin-top: 0 !important;
+    }
+    .category-section {
+      page-break-inside: avoid;
+      border: 1px solid #e2e8f0 !important;
+      margin-bottom: 2rem;
+    }
+    .audit-item {
+      page-break-inside: avoid;
+    }
+    input[type="checkbox"] {
+      appearance: none;
+      border: 1px solid #000;
+      width: 1rem;
+      height: 1rem;
+      position: relative;
+    }
+    input[type="checkbox"]:checked::after {
+      content: "✓";
+      position: absolute;
+      top: -2px;
+      left: 2px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+  }
+</style>
