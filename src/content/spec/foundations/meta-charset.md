@@ -7,7 +7,7 @@ status: required
 order: 30
 appliesTo: [all]
 relatedSlugs: [doctype, html-lang, meta-viewport]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "HTML Living Standard — Specifying the document's character encoding"
     url: "https://html.spec.whatwg.org/multipage/semantics.html#charset"

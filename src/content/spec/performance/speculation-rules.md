@@ -7,7 +7,7 @@ status: recommended
 order: 95
 appliesTo: [all]
 relatedSlugs: [core-web-vitals, preload-prefetch-preconnect, view-transitions, http3, resource-hints, no-vary-search]
-updated: "2026-05-29"
+updated: "2026-05-29T19:23:20.283Z"
 sources:
   - title: "MDN — Speculation Rules API"
     url: "https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API"
@@ -22,6 +22,8 @@ sources:
     url: "https://web.dev/articles/speculation-rules"
     publisher: "web.dev"
 ---
+
+> **This site ships it.** Every page emits a `<script type="speculationrules">` block from `BaseLayout.astro` — `prerender` on `moderate` for HTML same-origin links, `prefetch` on `conservative` as a fallback. The CSP allows the block via `'inline-speculation-rules'` (no `'unsafe-inline'`), and our bot logger drops requests with `Sec-Purpose: prefetch` so the stats stay honest.
 
 ## What it is
 

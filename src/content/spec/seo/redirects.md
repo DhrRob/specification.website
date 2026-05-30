@@ -7,7 +7,7 @@ status: required
 order: 60
 appliesTo: [all]
 relatedSlugs: [url-structure, canonical-url, soft-404]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 9110 — HTTP Semantics, redirection 3xx"
     url: "https://www.rfc-editor.org/rfc/rfc9110.html#name-redirection-3xx"

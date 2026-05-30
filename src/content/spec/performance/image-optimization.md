@@ -7,7 +7,7 @@ status: required
 order: 20
 appliesTo: [all]
 relatedSlugs: [lazy-loading, core-web-vitals, preload-prefetch-preconnect]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "MDN — <img>: The Image Embed element"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img"

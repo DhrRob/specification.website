@@ -7,7 +7,7 @@ status: required
 order: 80
 appliesTo: [all]
 relatedSlugs: [internal-linking, breadcrumbs, structured-data]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "HTML Living Standard — Headings and sections"
     url: "https://html.spec.whatwg.org/multipage/sections.html#headings-and-sections"

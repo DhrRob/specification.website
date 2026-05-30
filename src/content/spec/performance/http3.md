@@ -7,7 +7,7 @@ status: recommended
 order: 90
 appliesTo: [all]
 relatedSlugs: [cache-control, compression, preload-prefetch-preconnect]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 9114 — HTTP/3"
     url: "https://www.rfc-editor.org/rfc/rfc9114"

@@ -2,12 +2,12 @@
 title: "Web font loading"
 slug: font-loading
 category: performance
-summary: "Self-host WOFF2 fonts, subset them, preload the critical face, and use font-display: swap so text is readable while the font is still loading."
+summary: "Self-host WOFF2 fonts, subset them, set font-display: swap so text is readable while the font loads, and preload the critical face only when it styles above-the-fold content."
 status: recommended
 order: 70
 appliesTo: [all]
 relatedSlugs: [preload-prefetch-preconnect, critical-css, core-web-vitals]
-updated: "2026-05-29"
+updated: "2026-05-29T20:27:54.000Z"
 sources:
   - title: "MDN — @font-face"
     url: "https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face"
@@ -51,17 +51,17 @@ Fonts can also be heavy. A single weight of a Latin font is ~30KB in WOFF2; a fu
 
 **Subset to what you use.** Google Fonts' default Latin subset covers most English-language sites. If your content is English only, drop Cyrillic, Greek, and Vietnamese subsets — that can halve the file. Tools: `pyftsubset`, `glyphhanger`, `subfont`.
 
-**Preload the critical face.** The body text font is render-blocking for most of the page. Preload it:
+**Preload the critical face — when it pays off.** A `<link rel="preload">` issues a high-priority fetch before CSS is parsed, so it competes with the HTML and critical CSS for bandwidth. Worth it when the font styles above-the-fold text *and* you have inlined critical CSS to free up the budget. On slow connections — or when you ship a heavy variable font and only need one weight up top — the preload steals bandwidth from more important requests and can delay first paint. If you use `font-display: optional` with a well-matched fallback, the preload usually buys nothing.
 
 ```html
-<link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 ```
 
 `crossorigin` is mandatory even for same-origin fonts — without it the preload misses the cache and the font fetches twice.
 
 **Set `font-display`.** `swap` shows the fallback immediately and swaps when the custom font arrives. `optional` is stricter: if the font isn't cached and ready within ~100ms, the fallback is used permanently — best for CLS. Avoid `block`, which causes FOIT.
 
-**Use variable fonts.** A single variable font file replaces 9 weight + style combinations and is usually smaller than 2 static weights.
+**Use variable fonts when you need multiple weights.** A variable font replaces several weight + style files, but each variable file is itself heavier than a single static weight — a Latin-subsetted Inter variable runs ~80–120KB; a single static Inter weight is ~30KB. Break-even is roughly three weights, or a weight plus its italic. Below that, ship the specific static weights.
 
 **Match metrics to reduce shift.** Use `size-adjust`, `ascent-override`, and `descent-override` on the fallback `@font-face` so the swap doesn't reflow the layout.
 
@@ -69,8 +69,10 @@ Fonts can also be heavy. A single weight of a Latin font is ~30KB in WOFF2; a fu
 
 - Loading from `fonts.googleapis.com` and a self-host preload. Double-fetch.
 - Preloading without `crossorigin`. Double-fetch.
+- Preloading a font without `font-display: swap` (or `optional`) — the preload steals bandwidth from critical CSS *and* you still get a FOIT if the font arrives late.
+- Preloading a heavy variable font when only one weight is used above the fold — ship the static weight instead.
 - `font-display: block` (or the default `auto`). Causes invisible text for up to 3 seconds.
-- Shipping 6 static weights when a variable font covers all of them.
+- Shipping six static weights when a variable font covers all of them; or shipping a variable font when one or two static weights would do.
 - Loading the full multi-script font for a Latin-only site.
 
 ## Verification

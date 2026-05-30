@@ -7,7 +7,7 @@ status: recommended
 order: 40
 appliesTo: [all]
 relatedSlugs: [robots-txt, content-signals, agent-readiness-overview, llms-txt, web-bot-auth]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "OpenAI — GPTBot"
     url: "https://platform.openai.com/docs/bots"

@@ -7,7 +7,7 @@ status: optional
 order: 88
 appliesTo: [all]
 relatedSlugs: [mcp-and-tool-discovery, agent-skills-discovery, agent-readiness-overview, structured-data-for-agents]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "WebMCP — W3C Web Machine Learning Community Group"
     url: "https://webmachinelearning.github.io/webmcp/"

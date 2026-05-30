@@ -7,7 +7,7 @@ status: avoid
 order: 70
 appliesTo: [all]
 relatedSlugs: [redirects, url-structure]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Soft 404 errors"
     url: "https://developers.google.com/search/docs/crawling-indexing/http-network-errors#soft-404-errors"

@@ -7,7 +7,7 @@ status: recommended
 order: 60
 appliesTo: [all]
 relatedSlugs: [keyboard-navigation, semantic-html, focus-indicators]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "WCAG 2.4.1 — Bypass Blocks (Level A)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html"

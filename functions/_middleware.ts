@@ -9,10 +9,17 @@
  * to the static asset pipeline unchanged, with Vary: Accept appended to
  * spec-page HTML responses so caches don't conflate the two
  * representations.
+ *
+ * Also calls `logBot()` first thing, so every page and well-known request
+ * that looks like a crawler / agent gets recorded in the AGENT_LOG
+ * Analytics Engine dataset (read by /admin/stats).
  */
+
+import { logBot } from './_shared/bot-detect';
 
 type Env = {
   ASSETS: Fetcher;
+  AGENT_LOG?: AnalyticsEngineDataset;
 };
 
 const SPEC_PAGE = /^\/spec\/([^/]+)\/([^/]+)\/?$/;
@@ -50,6 +57,10 @@ function withVaryAccept(response: Response): Response {
 }
 
 export const onRequest: PagesFunction<Env> = async (context) => {
+  // Bot/agent logging must run before any early return below, otherwise
+  // crawlers (which fetch HTML, not markdown) would never be logged.
+  logBot(context);
+
   const { request, next, env } = context;
   const url = new URL(request.url);
   const accept = request.headers.get('accept') ?? '';

@@ -7,7 +7,7 @@ status: optional
 order: 80
 appliesTo: [all]
 relatedSlugs: [agent-readiness-overview, machine-readable-formats, llms-txt, link-headers, api-catalog, agent-skills-discovery, a2a-agent-cards, webmcp, nlweb]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "Model Context Protocol"
     url: "https://modelcontextprotocol.io/"

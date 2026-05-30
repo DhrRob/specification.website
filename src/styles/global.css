@@ -1,20 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
 
-  --color-ink-50: #f7f7f8;
-  --color-ink-100: #eeeef1;
-  --color-ink-200: #d8d8df;
-  --color-ink-300: #b4b4be;
-  --color-ink-400: #87878f;
-  --color-ink-500: #5b5b66;
-  --color-ink-600: #3f3f48;
-  --color-ink-700: #2a2a31;
-  --color-ink-800: #1a1a20;
-  --color-ink-900: #0e0e13;
+  /* Ink scale resolves via light-dark() so it follows the used color-scheme.
+     `50` is always the page surface, `900` the strongest text — semantic in
+     both schemes. Toggling [data-theme] on <html> flips color-scheme below,
+     which flips every utility that references one of these tokens. */
+  --color-ink-50:  light-dark(#f7f7f8, #0e0e13);
+  --color-ink-100: light-dark(#eeeef1, #1a1a20);
+  --color-ink-200: light-dark(#d8d8df, #2a2a31);
+  --color-ink-300: light-dark(#b4b4be, #3f3f48);
+  --color-ink-400: light-dark(#87878f, #5b5b66);
+  --color-ink-500: light-dark(#5b5b66, #87878f);
+  --color-ink-600: light-dark(#3f3f48, #b4b4be);
+  --color-ink-700: light-dark(#2a2a31, #d8d8df);
+  --color-ink-800: light-dark(#1a1a20, #eeeef1);
+  --color-ink-900: light-dark(#0e0e13, #f7f7f8);
 
+  /* Accent scale is fixed across modes — the same brand green hex values.
+     Per-utility contrast for text-on-dark is handled via light-dark() in
+     --link-color / --pill-* below. */
   --color-accent-50: #f0fdf4;
   --color-accent-100: #dcfce7;
   --color-accent-200: #bbf7d0;
@@ -27,15 +34,35 @@
   --color-accent-900: #14532d;
 }
 
+/* Default = follow OS. Explicit toggle states force a single scheme, which
+   in turn pins every light-dark() value above and below. */
+:root { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* Reserve scrollbar space so layout doesn't shift on pages that don't
+     overflow. Avoids horizontal jank between short and tall pages. */
+  scrollbar-gutter: stable;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Cross-document View Transitions — animate between same-origin navigations
+   on supporting browsers. Reduced-motion users get an instant swap. */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0ms !important;
+  }
 }
 
 body {
   font-family: var(--font-sans);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -240,10 +267,10 @@ body {
   right: 0;
   left: auto;
   width: min(20rem, calc(100vw - 2rem));
-  background: white;
+  background: var(--color-ink-50);
   border: 1px solid var(--color-ink-200);
   border-radius: 0.5rem;
-  box-shadow: 0 10px 30px -5px rgba(14, 14, 19, 0.18);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35);
   z-index: 50;
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
@@ -260,14 +287,14 @@ body {
   color: var(--color-ink-800);
 }
 .search-overlay::backdrop {
-  background: rgba(14, 14, 19, 0.45);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(2px);
 }
 .search-overlay__inner {
-  background: white;
+  background: var(--color-ink-50);
   border: 1px solid var(--color-ink-200);
   border-radius: 0.75rem;
-  box-shadow: 0 20px 50px -10px rgba(14, 14, 19, 0.25);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.45);
   overflow: hidden;
 }
 .search-overlay__bar {
@@ -276,7 +303,7 @@ body {
   justify-content: space-between;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--color-ink-100);
-  background: var(--color-ink-50);
+  background: var(--color-ink-100);
 }
 .search-overlay__foot {
   display: flex;
@@ -284,7 +311,7 @@ body {
   gap: 1.25rem;
   padding: 0.6rem 0.9rem;
   border-top: 1px solid var(--color-ink-100);
-  background: var(--color-ink-50);
+  background: var(--color-ink-100);
   font-size: 0.75rem;
   color: var(--color-ink-500);
 }
@@ -294,7 +321,7 @@ body {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   border: 1px solid var(--color-ink-200);
-  background: white;
+  background: var(--color-ink-50);
   border-radius: 0.25rem;
   color: var(--color-ink-600);
   margin-right: 0.25rem;
@@ -307,7 +334,7 @@ body {
 #search-overlay-mount .pagefind-ui {
   --pagefind-ui-primary: var(--color-accent-700);
   --pagefind-ui-text: var(--color-ink-800);
-  --pagefind-ui-background: white;
+  --pagefind-ui-background: var(--color-ink-50);
   --pagefind-ui-border: var(--color-ink-200);
   --pagefind-ui-tag: var(--color-ink-100);
   --pagefind-ui-border-radius: 0.5rem;
@@ -317,4 +344,128 @@ body {
 #search-overlay-mount .pagefind-ui__form::before {
   /* Hide the default search icon since we already have one in the trigger */
   opacity: 0.5;
+}
+
+/* Scheme-dependent overrides — single block driven by light-dark(). Both
+   modes get the same property, with the function picking the right value
+   based on the resolved color-scheme. No prefers-color-scheme media query
+   needed: the @data-theme override on <html> pins color-scheme, which pins
+   the result of every light-dark() call below. */
+:root {
+  /* Accent text: dark-mode value lifted from accent-700 (~3.5:1 on dark bg)
+     to accent-400 (~10:1). */
+  --link-color:       light-dark(var(--color-accent-700), var(--color-accent-400));
+  --link-hover-color: light-dark(var(--color-accent-800), var(--color-accent-300));
+
+  /* Status pills — required (red), avoid (amber), recommended (accent). */
+  --pill-required-bg:     light-dark(var(--color-red-50),    rgb(220 38 38 / 0.15));
+  --pill-required-fg:     light-dark(var(--color-red-800),   #fca5a5);
+  --pill-required-border: light-dark(var(--color-red-200),   rgb(220 38 38 / 0.4));
+
+  --pill-avoid-bg:        light-dark(var(--color-amber-50),  rgb(217 119 6 / 0.15));
+  --pill-avoid-fg:        light-dark(var(--color-amber-800), #fcd34d);
+  --pill-avoid-fg-strong: light-dark(var(--color-amber-900), #fde68a);
+  --pill-avoid-border:    light-dark(var(--color-amber-200), rgb(217 119 6 / 0.4));
+
+  --pill-recommended-bg:     light-dark(var(--color-accent-50),  rgb(34 197 94 / 0.12));
+  --pill-recommended-border: light-dark(var(--color-accent-200), rgb(34 197 94 / 0.35));
+  --pill-recommended-ring:   light-dark(var(--color-accent-200), rgb(34 197 94 / 0.4));
+
+  /* Hero / MCP card gradient tint. */
+  --gradient-tint-from: light-dark(
+    color-mix(in oklch, var(--color-accent-50) 60%, transparent),
+    rgb(34 197 94 / 0.08)
+  );
+}
+
+.prose-spec a               { color: var(--link-color); }
+.prose-spec a:hover         { color: var(--link-hover-color); }
+
+.text-accent-700,
+.text-accent-800            { color: var(--link-color); }
+.hover\:text-accent-700:hover,
+.hover\:text-accent-800:hover { color: var(--link-hover-color); }
+.group:hover .group-hover\:text-accent-700 { color: var(--link-color); }
+
+.bg-red-50      { background-color: var(--pill-required-bg); }
+.text-red-800   { color: var(--pill-required-fg); }
+.border-red-200 { border-color: var(--pill-required-border); }
+
+.bg-amber-50      { background-color: var(--pill-avoid-bg); }
+.text-amber-800   { color: var(--pill-avoid-fg); }
+.text-amber-900   { color: var(--pill-avoid-fg-strong); }
+.border-amber-200 { border-color: var(--pill-avoid-border); }
+
+.bg-accent-50      { background-color: var(--pill-recommended-bg); }
+.border-accent-200 { border-color: var(--pill-recommended-border); }
+.ring-accent-200   { --tw-ring-color: var(--pill-recommended-ring); }
+
+.from-accent-50\/60,
+.from-accent-50\/70 { --tw-gradient-from: var(--gradient-tint-from); }
+
+/* Theme toggle — sliding-knob switch. Knob position is driven by
+   :root[data-theme] so the CSS reflects the resolved theme even before
+   /theme-toggle.js wires the click handler. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-toggle__track {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  border-radius: 9999px;
+  background: var(--color-ink-200);
+  border: 1px solid var(--color-ink-300);
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+:root[data-theme="dark"] .theme-toggle__track {
+  background: var(--color-accent-700);
+  border-color: var(--color-accent-800);
+}
+.theme-toggle__knob {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: light-dark(#ffffff, #f7f7f8);
+  border: 1px solid var(--color-ink-300);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  display: grid;
+  place-items: center;
+  color: var(--color-ink-700);
+  transition: left 200ms ease, background-color 200ms ease;
+}
+:root[data-theme="dark"] .theme-toggle__knob {
+  left: calc(100% - 21px);
+  color: var(--color-accent-800);
+  border-color: var(--color-accent-800);
+}
+.theme-toggle__icon {
+  width: 12px;
+  height: 12px;
+  display: none;
+}
+.theme-toggle__icon--sun { display: block; }
+:root[data-theme="dark"] .theme-toggle__icon--sun { display: none; }
+:root[data-theme="dark"] .theme-toggle__icon--moon { display: block; }
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  outline-offset: 3px;
+  border-radius: 9999px;
+}
+.theme-toggle:hover .theme-toggle__track { border-color: var(--color-ink-400); }
+:root[data-theme="dark"] .theme-toggle:hover .theme-toggle__track { border-color: var(--color-accent-600); }
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle__track,
+  .theme-toggle__knob { transition: none; }
 }

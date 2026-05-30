@@ -7,7 +7,7 @@ status: optional
 order: 45
 appliesTo: [all]
 relatedSlugs: [robots-for-ai-crawlers, content-signals, agent-readiness-overview, link-headers]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "RFC 9421 — HTTP Message Signatures"
     url: "https://www.rfc-editor.org/rfc/rfc9421"

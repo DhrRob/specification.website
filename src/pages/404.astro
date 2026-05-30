@@ -2,7 +2,7 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Page not found" description="The page you tried to reach does not exist." noindex>
+<BaseLayout title="Page not found" description="The page you tried to reach does not exist." ogImage="/og/404.png" noindex>
   <section class="mx-auto max-w-2xl px-4 py-20 text-center">
     <p class="font-mono text-sm text-ink-500">404</p>
     <h1 class="mt-2 text-4xl font-bold text-ink-900 sm:text-5xl">Page not found</h1>
@@ -14,7 +14,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
     </p>
     <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
       <a href="/" class="rounded-md bg-accent-700 px-4 py-2 text-sm font-medium text-white hover:bg-accent-800">Go home</a>
-      <a href="/spec/" class="rounded-md border border-ink-300 bg-white px-4 py-2 text-sm font-medium text-ink-800 hover:border-ink-400">Browse the spec</a>
+      <a href="/spec/" class="rounded-md border border-ink-300 bg-ink-50 px-4 py-2 text-sm font-medium text-ink-800 hover:border-ink-400">Browse the spec</a>
     </div>
   </section>
 </BaseLayout>

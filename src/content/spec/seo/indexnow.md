@@ -7,7 +7,7 @@ status: optional
 order: 120
 appliesTo: [all]
 relatedSlugs: [xml-sitemaps, sitemap-index, robots-txt]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "IndexNow protocol"
     url: "https://www.indexnow.org/documentation"

@@ -7,7 +7,7 @@ status: required
 order: 20
 appliesTo: [all]
 relatedSlugs: [privacy-policy, third-party-scripts, analytics-privacy, global-privacy-control]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "EDPB Guidelines 03/2022 on deceptive design patterns in social media"
     url: "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-032022-deceptive-design-patterns-social-media_en"

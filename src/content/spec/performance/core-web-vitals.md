@@ -7,7 +7,7 @@ status: required
 order: 10
 appliesTo: [all]
 relatedSlugs: [image-optimization, critical-css, lazy-loading]
-updated: "2026-05-29"
+updated: "2026-05-29T20:27:54.000Z"
 sources:
   - title: "web.dev — Web Vitals"
     url: "https://web.dev/articles/vitals"
@@ -21,6 +21,9 @@ sources:
   - title: "web.dev — Cumulative Layout Shift (CLS)"
     url: "https://web.dev/articles/cls"
     publisher: "web.dev"
+  - title: "Chrome for Developers — Break up long tasks with scheduler.yield()"
+    url: "https://developer.chrome.com/blog/use-scheduler-yield"
+    publisher: "Chrome for Developers"
 ---
 
 ## What it is
@@ -49,7 +52,7 @@ Slow pages lose users. Field studies consistently show conversion, bounce rate, 
 
 **LCP** — identify the LCP element (usually a hero image or heading) and make it arrive fast. Serve it from the origin, preload it, avoid lazy-loading it, and keep it out of client-rendered components.
 
-**INP** — break up long JavaScript tasks, defer non-critical work, and avoid heavy work in event handlers. Use `requestIdleCallback` or `scheduler.postTask` for non-urgent work. Audit third-party scripts.
+**INP** — break up long JavaScript tasks, defer non-critical work, and avoid heavy work in event handlers. Inside a long task, `await scheduler.yield()` between chunks so the browser can process input — the continuation runs at boosted priority, so your work finishes before other queued tasks. To schedule new low-priority work, use `scheduler.postTask(fn, {priority: 'background'})` or `requestIdleCallback`. Audit third-party scripts.
 
 **CLS** — set explicit `width` and `height` on images, iframes, and video. Reserve space for ads and embeds. Avoid inserting content above existing content. Preload fonts to reduce FOUT swaps.
 

@@ -7,7 +7,7 @@ status: recommended
 order: 30
 appliesTo: [all]
 relatedSlugs: [cookie-consent, privacy-policy, analytics-privacy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Global Privacy Control specification"
     url: "https://globalprivacycontrol.github.io/gpc-spec/"

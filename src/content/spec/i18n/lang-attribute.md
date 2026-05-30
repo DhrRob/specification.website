@@ -6,8 +6,8 @@ summary: "Mark passages, phrases, and inline elements that differ from the docum
 status: required
 order: 20
 appliesTo: [all]
-relatedSlugs: [hreflang, rtl-support, locale-content]
-updated: "2026-05-29"
+relatedSlugs: [hreflang, rtl-support, locale-content, language-switcher, localised-metadata]
+updated: "2026-05-29T18:54:03.000Z"
 sources:
   - title: "WCAG 3.1.2 — Language of Parts (Level AA)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/language-of-parts.html"

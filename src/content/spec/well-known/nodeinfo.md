@@ -7,7 +7,7 @@ status: optional
 order: 70
 appliesTo: [all]
 relatedSlugs: [well-known-overview, webfinger]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "NodeInfo — Protocol overview"
     url: "http://nodeinfo.diaspora.software/"

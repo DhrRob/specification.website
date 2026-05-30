@@ -7,7 +7,7 @@ status: recommended
 order: 90
 appliesTo: [all]
 relatedSlugs: [content-security-policy, https-tls, x-content-type-options]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Subresource Integrity (W3C Recommendation)"
     url: "https://www.w3.org/TR/SRI/"

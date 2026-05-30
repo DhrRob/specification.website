@@ -7,7 +7,7 @@ status: recommended
 order: 30
 appliesTo: [all]
 relatedSlugs: [image-optimization, core-web-vitals, preload-prefetch-preconnect]
-updated: "2026-05-29"
+updated: "2026-05-29T09:51:43.000Z"
 sources:
   - title: "MDN — <img> loading attribute"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading"

@@ -7,7 +7,7 @@ status: recommended
 order: 90
 appliesTo: [all]
 relatedSlugs: [url-structure, breadcrumbs, heading-hierarchy, xml-sitemaps]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Yoast — Internal linking for SEO"
     url: "https://yoast.com/internal-linking-for-seo-why-and-how/"

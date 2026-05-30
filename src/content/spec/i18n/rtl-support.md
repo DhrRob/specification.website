@@ -6,8 +6,8 @@ summary: 'Sites that serve Arabic, Hebrew, Persian, or Urdu must set dir="rtl" a
 status: recommended
 order: 30
 appliesTo: [all]
-relatedSlugs: [lang-attribute, hreflang, locale-content]
-updated: "2026-05-29"
+relatedSlugs: [lang-attribute, hreflang, locale-content, writing-modes]
+updated: "2026-05-29T18:54:03.000Z"
 sources:
   - title: "W3C i18n — Structural markup and right-to-left text in HTML"
     url: "https://www.w3.org/International/questions/qa-html-dir"
@@ -64,7 +64,17 @@ The full set includes `margin-inline-*`, `padding-inline-*`, `border-inline-*`, 
 
 **Mirror directional icons.** Arrows, chevrons, back buttons, progress bars, and breadcrumbs should mirror in RTL. Use `transform: scaleX(-1)` or supply mirrored SVGs. Do not mirror logos, photos, numerals, or media controls (play stays a right-pointing triangle universally).
 
-**Test bidi inline.** Embed Latin text inside an Arabic paragraph and check digits, punctuation, and parentheses sit correctly. Use `<bdi>` for unknown-direction user content and `<bdo dir="…">` for explicit override.
+**Test bidi inline.** Embed Latin text inside an Arabic paragraph and check digits, punctuation, and parentheses sit correctly.
+
+**Use the right element for unknown or overridden direction.** Three HTML mechanisms exist for inline bidi control, each with a distinct job:
+
+- **`dir="auto"`** on any element — the browser picks direction from the first strong character. The right default for any field that displays user-generated content (comments, usernames, message bodies, search queries).
+- **`<bdi>`** — short for "bidi isolation". Wraps a fragment whose direction is unknown so it does not break the surrounding paragraph's bidi algorithm. Use for usernames, titles, and any embedded foreign-language string inside running text: `Mentioned by <bdi>@محمد</bdi> in the thread`.
+- **`<bdo dir="ltr">` or `<bdo dir="rtl">`** — force a specific direction regardless of content. Rare; use only when you genuinely need to override the algorithm.
+
+`<bdi>` is the one most sites forget. Without it, an RTL username injected into an LTR template can flip surrounding punctuation and timestamps; the page looks broken and the fix is one element.
+
+For vertical scripts (Japanese, Mongolian) and CJK line breaking, see [writing-modes](/i18n/writing-modes). Direction (`dir`) is about LTR vs RTL; `writing-mode` is about horizontal vs vertical. They are separate axes.
 
 ## Common mistakes
 

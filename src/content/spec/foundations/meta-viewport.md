@@ -7,7 +7,7 @@ status: required
 order: 40
 appliesTo: [all]
 relatedSlugs: [doctype, meta-charset, theme-color]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "MDN — Viewport meta tag"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag"

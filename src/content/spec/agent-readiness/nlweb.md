@@ -7,7 +7,7 @@ status: optional
 order: 87
 appliesTo: [all]
 relatedSlugs: [mcp-and-tool-discovery, agent-readiness-overview, structured-data-for-agents, link-headers]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "microsoft/NLWeb on GitHub"
     url: "https://github.com/microsoft/NLWeb"

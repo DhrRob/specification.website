@@ -7,7 +7,7 @@ status: required
 order: 110
 appliesTo: [all]
 relatedSlugs: [form-labels, aria-usage, color-contrast]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "WCAG 3.3.1 — Error Identification (Level A)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html"

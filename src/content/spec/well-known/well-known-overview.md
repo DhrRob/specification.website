@@ -7,7 +7,7 @@ status: recommended
 order: 10
 appliesTo: [all]
 relatedSlugs: [change-password, openid-configuration, webfinger, apple-app-site-association, assetlinks-json, nodeinfo, api-catalog]
-updated: "2026-05-29"
+updated: "2026-05-29T10:18:46.000Z"
 sources:
   - title: "RFC 8615 — Well-Known Uniform Resource Identifiers (URIs)"
     url: "https://www.rfc-editor.org/rfc/rfc8615"

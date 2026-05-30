@@ -19,3 +19,10 @@ custom_domain = true
 # Observability — Workers Analytics + tail logs.
 [observability]
 enabled = true
+
+# Analytics Engine — per-call MCP/A2A usage log. Read by the Pages
+# /admin/stats dashboard via the Cloudflare Analytics Engine SQL API.
+# Same account, different binding namespace — datasets are account-scoped.
+[[analytics_engine_datasets]]
+binding = "MCP_LOG"
+dataset = "sw_mcp_log"

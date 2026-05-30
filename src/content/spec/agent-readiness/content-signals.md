@@ -7,7 +7,7 @@ status: optional
 order: 42
 appliesTo: [all]
 relatedSlugs: [robots-for-ai-crawlers, robots-txt, agent-readiness-overview, web-bot-auth]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "IETF AI Preferences WG (aipref) — drafts"
     url: "https://datatracker.ietf.org/wg/aipref/documents/"

@@ -7,7 +7,7 @@ status: recommended
 order: 60
 appliesTo: [all]
 relatedSlugs: [title, open-graph, canonical-url]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "MDN — <meta>: the metadata element"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta"

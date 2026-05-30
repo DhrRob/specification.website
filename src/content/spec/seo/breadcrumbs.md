@@ -7,7 +7,7 @@ status: recommended
 order: 110
 appliesTo: [all]
 relatedSlugs: [structured-data, internal-linking, url-structure, heading-hierarchy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Schema.org — BreadcrumbList"
     url: "https://schema.org/BreadcrumbList"

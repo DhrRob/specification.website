@@ -7,7 +7,7 @@ status: recommended
 order: 85
 appliesTo: [all]
 relatedSlugs: [mcp-and-tool-discovery, llms-txt, link-headers, markdown-source-endpoints, api-catalog, a2a-agent-cards]
-updated: "2026-05-29"
+updated: "2026-05-29T11:27:49.000Z"
 sources:
   - title: "Agent Skills Discovery via Well-Known URIs (RFC draft)"
     url: "https://github.com/cloudflare/agent-skills-discovery-rfc"

@@ -7,7 +7,7 @@ status: required
 order: 30
 appliesTo: [all]
 relatedSlugs: [form-errors, aria-usage]
-updated: "2026-05-29"
+updated: "2026-05-29T10:57:27.000Z"
 sources:
   - title: "WCAG 3.3.2 — Labels or Instructions (Level A)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html"

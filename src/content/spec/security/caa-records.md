@@ -7,7 +7,7 @@ status: recommended
 order: 110
 appliesTo: [all]
 relatedSlugs: [https-tls, hsts, dnssec]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 8659 — DNS Certification Authority Authorization (CAA) Resource Record"
     url: "https://www.rfc-editor.org/rfc/rfc8659"

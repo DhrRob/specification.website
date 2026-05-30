@@ -7,7 +7,7 @@ status: required
 order: 10
 appliesTo: [all]
 relatedSlugs: [hsts, caa-records, content-security-policy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 8446 — The Transport Layer Security (TLS) Protocol Version 1.3"
     url: "https://www.rfc-editor.org/rfc/rfc8446"

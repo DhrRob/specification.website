@@ -7,7 +7,7 @@ status: required
 order: 40
 appliesTo: [all]
 relatedSlugs: [focus-indicators, skip-links, semantic-html]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "WCAG 2.1.1 — Keyboard (Level A)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"

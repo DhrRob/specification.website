@@ -7,7 +7,7 @@ status: recommended
 order: 40
 appliesTo: [all]
 relatedSlugs: [offline-support, favicons]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "W3C — Web Application Manifest"
     url: "https://www.w3.org/TR/appmanifest/"

@@ -7,7 +7,7 @@ status: recommended
 order: 10
 appliesTo: [all]
 relatedSlugs: [xml-sitemaps, robots-for-ai-crawlers, redirects]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 9309 — Robots Exclusion Protocol"
     url: "https://www.rfc-editor.org/rfc/rfc9309.html"

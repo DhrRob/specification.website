@@ -7,7 +7,7 @@ status: recommended
 order: 80
 appliesTo: [all]
 relatedSlugs: [content-security-policy, frame-ancestors, referrer-policy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Permissions Policy (W3C Working Draft)"
     url: "https://www.w3.org/TR/permissions-policy/"

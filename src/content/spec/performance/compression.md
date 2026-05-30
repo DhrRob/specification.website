@@ -7,7 +7,7 @@ status: required
 order: 60
 appliesTo: [all]
 relatedSlugs: [cache-control, http3]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 7932 — Brotli Compressed Data Format"
     url: "https://www.rfc-editor.org/rfc/rfc7932"

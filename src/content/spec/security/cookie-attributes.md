@@ -7,7 +7,7 @@ status: required
 order: 100
 appliesTo: [all]
 relatedSlugs: [https-tls, hsts, frame-ancestors, referrer-policy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "draft-ietf-httpbis-rfc6265bis — Cookies: HTTP State Management Mechanism"
     url: "https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis"

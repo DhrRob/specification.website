@@ -62,10 +62,15 @@ These mirror `CONTRIBUTING.md`. Enforce them in your own writing and when review
 | `src/pages/spec/[category]/[slug].astro` | The dynamic HTML route. |
 | `src/pages/spec/[category]/[slug].md.ts` | The dynamic Markdown route. |
 | `src/pages/llms.txt.ts`, `src/pages/llms-full.txt.ts`, `src/pages/rss.xml.ts` | Derived endpoints. |
-| `functions/_middleware.ts` | Cloudflare Pages middleware. Does `Accept: text/markdown` content negotiation on canonical spec URLs and on `/`. |
+| `functions/_middleware.ts` | Cloudflare Pages middleware. Does `Accept: text/markdown` content negotiation on canonical spec URLs and on `/`, and calls `logBot()` so crawler hits land in the `AGENT_LOG` Analytics Engine dataset. |
+| `functions/_shared/bot-detect.ts` | UA / `signature-agent` / `cf-verified` / `Accept: text/markdown` detection plus `writeDataPoint()` to the `AGENT_LOG` Analytics Engine binding. Never throws. |
+| `functions/admin/stats.ts` | `/admin/stats` dashboard. Queries `sw_agent_log` (crawlers) and `sw_mcp_log` (MCP/A2A) via the Cloudflare Analytics Engine SQL API using `CF_ACCOUNT_ID` + `CF_ANALYTICS_TOKEN` Pages secrets. **Behind Cloudflare Access** — the function assumes the caller is already authenticated. |
+| `public/admin-stats.js` | Tab + filter JS for `/admin/stats`. Extracted to a file because the CSP forbids inline scripts. |
+| `public/_routes.json` | Cloudflare Pages routing manifest — excludes static assets from the Functions worker so bot logging only runs on HTML and well-known paths. |
+| `wrangler.toml` (root) | Pages bindings — only `AGENT_LOG` Analytics Engine dataset (`sw_agent_log`). Pages itself is deployed via the Pages dashboard's Git integration. |
 | `public/_headers` | Cloudflare response headers — strict CSP, HSTS, Permissions-Policy, Vary on .md, content types for well-known files, the discovery `Link` header. |
 | `public/.well-known/` | Static well-known URIs (security.txt, change-password, api-catalog, mcp/server-card.json, agent-card.json for A2A discovery, agent-skills/index.json + agent-skills/<name>/SKILL.md per the Agent Skills Discovery RFC v0.2.0 — if you edit a SKILL.md, recompute its sha256 and update the `digest` in index.json). |
-| `mcp/` | Cloudflare Worker exposing the spec at `mcp.specification.website`. Serves the MCP transport at `/mcp`, an A2A (Agent-to-Agent) JSON-RPC endpoint at `/a2a/v1`, and mirrors both discovery cards under `/.well-known/`. Has its own `package.json`, `wrangler.toml`, build script. Reads from the same `src/content/spec/` source of truth at build time. |
+| `mcp/` | Cloudflare Worker exposing the spec at `mcp.specification.website`. Serves the MCP transport at `/mcp`, an A2A (Agent-to-Agent) JSON-RPC endpoint at `/a2a/v1`, and mirrors both discovery cards under `/.well-known/`. Has its own `package.json`, `wrangler.toml`, build script. Reads from the same `src/content/spec/` source of truth at build time. Logs each call to the `MCP_LOG` Analytics Engine dataset (`sw_mcp_log`). |
 | `public/search-overlay.js` | ⌘K overlay logic. CSP-safe (no inline JS). |
 | `public/search-init.js` | `/search/` page Pagefind initialiser. CSP-safe. |
 | `scripts/generate-assets.mjs` | Generates icons + OG image from inline SVGs via `sharp`. Wired through `prebuild`/`predev`. |
@@ -135,6 +140,29 @@ The reverse holds too: **do not promote a convention to spec status without us s
 - Functions live in `/functions/` and ship alongside static assets. The Cloudflare build picks them up automatically.
 - The **MCP server** in `/mcp/` is a separate Cloudflare Worker — `cd mcp && npm run deploy`. It registers `mcp.specification.website` as a custom domain on first deploy. When the spec content changes, redeploy the Worker so its bundled data stays in sync (the predeploy hook regenerates `mcp/src/data.json`).
 
+## Admin stats dashboard
+
+`/admin/stats` is a server-rendered dashboard for crawler traffic (`sw_agent_log`) and MCP / A2A usage (`sw_mcp_log`). It is **gated by Cloudflare Access**; the function itself does no auth and trusts the edge.
+
+Two writers, both Cloudflare Analytics Engine:
+
+- `functions/_shared/bot-detect.ts` writes a row per bot/agent request via the `AGENT_LOG` binding declared in the root `wrangler.toml`. See `BOT_UA_MATCHERS` for the crawler list — when a new high-profile AI / LLM / search bot ships, add its UA pattern there.
+- `mcp/src/index.ts` writes a row per MCP / A2A call via the `MCP_LOG` binding declared in `mcp/wrangler.toml`. The two surfaces (`remote`, `a2a`) are tagged in `blob10`.
+
+The dashboard reads both datasets via the [Analytics Engine SQL API](https://developers.cloudflare.com/analytics/analytics-engine/sql-api/) using two Pages secrets:
+
+- `CF_ACCOUNT_ID` — the account that owns the project (`c53e64d218c83cb220b523a637ffd079`).
+- `CF_ANALYTICS_TOKEN` — an API token with **Account → Account Analytics → Read** scoped to that account. Create at [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) and add both as Pages → Settings → Variables and Secrets (Production + Preview).
+
+A "table not found" error from a query is expected until the matching dataset has received its first write. Datasets are account-scoped, so the same SQL token reads from both the Pages-written `sw_agent_log` and the Worker-written `sw_mcp_log`.
+
+Conventions when extending it:
+
+- Keep the dashboard CSP-safe — interaction JS lives in `public/admin-stats.js`, not inline.
+- Never break a request because logging failed — both `logBot()` and `logMcpCall()` wrap everything in try/catch and return silently.
+- Bot detection runs before content negotiation in `functions/_middleware.ts`; don't reorder.
+- `public/_routes.json` excludes static assets so the Functions worker (and the logger) only runs on HTML and well-known paths. When you add a new top-level static asset path, add it there too.
+
 ## Privacy stance
 
-The site collects aggregate Plausible analytics (no cookies, no IP storage, EU-hosted) and nothing else. Documented in `src/pages/privacy.astro`. If you add anything that collects data, update that page truthfully *in the same PR*.
+The site collects aggregate Plausible analytics (no cookies, no IP storage, EU-hosted) for visitors, and aggregate Cloudflare Analytics Engine logs for crawlers and MCP/A2A clients (UA, country, path, tool name; no cookies, no IP storage). Documented in `src/pages/privacy.astro`. If you add anything that collects data, update that page truthfully *in the same PR*.

@@ -16,6 +16,7 @@ for (const k of Object.keys(grouped)) {
 <BaseLayout
   title="The checklist"
   description="The Website Specification as a flat checklist — required, recommended, optional. Print-friendly."
+  ogImage="/og/checklist.png"
 >
   <div class="mx-auto max-w-4xl px-4 py-10">
     <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Checklist' }]} />
@@ -32,7 +33,7 @@ for (const k of Object.keys(grouped)) {
           <section>
             <h2 class="text-xl font-bold text-ink-900">{c.title}</h2>
             <p class="text-sm text-ink-600">{c.summary}</p>
-            <ul class="mt-3 divide-y divide-ink-100 rounded-lg border border-ink-200 bg-white">
+            <ul class="mt-3 divide-y divide-ink-100 rounded-lg border border-ink-200 bg-ink-50">
               {items.map((entry) => (
                 <li class="flex items-start gap-3 px-4 py-3">
                   <input type="checkbox" class="mt-1.5 h-4 w-4 rounded border-ink-300 text-accent-700 focus:ring-accent-500" aria-label={`Mark ${entry.data.title} done`} />

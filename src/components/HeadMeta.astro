@@ -9,6 +9,9 @@ interface Props {
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   markdownUrl?: string;
+  jsonldUrl?: string;
+  /** Absolute or root-relative path to the page's social image. Defaults to /og-default.png. */
+  ogImage?: string;
 }
 
 const {
@@ -19,17 +22,20 @@ const {
   noindex = false,
   jsonLd,
   markdownUrl,
+  jsonldUrl,
+  ogImage: ogImageOverride,
 } = Astro.props;
 
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site.url).toString();
 const fullTitle = title === site.name ? title : `${title} · ${site.shortName}`;
-const ogImage = new URL('/og-default.png', site.url).toString();
+const ogImage = new URL(ogImageOverride ?? '/og-default.png', site.url).toString();
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light dark" />
-<meta name="theme-color" content={site.themeColor} />
+<meta name="theme-color" content={site.themeColor} media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content={site.themeColorDark} media="(prefers-color-scheme: dark)" />
 <meta name="generator" content={Astro.generator} />
 
 <title>{fullTitle}</title>
@@ -60,7 +66,11 @@ const ogImage = new URL('/og-default.png', site.url).toString();
 {markdownUrl && (
   <link rel="alternate" type="text/markdown" title={`${title} — Markdown source`} href={markdownUrl} />
 )}
+{jsonldUrl && (
+  <link rel="alternate" type="application/ld+json" title={`${title} — JSON-LD graph`} href={jsonldUrl} />
+)}
 <link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="schemamap" type="application/xml" title="Schemamap index" href="/schemamap.xml" />
 <link rel="author" href="/humans.txt" />
 
 {jsonLd && (

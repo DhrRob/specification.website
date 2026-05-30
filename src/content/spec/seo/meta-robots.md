@@ -7,7 +7,7 @@ status: required
 order: 75
 appliesTo: [all]
 relatedSlugs: [robots-txt, canonical-url, redirects, soft-404, xml-sitemaps]
-updated: "2026-05-29"
+updated: "2026-05-29T09:55:11.000Z"
 sources:
   - title: "HTML Living Standard — Standard metadata names: robots"
     url: "https://html.spec.whatwg.org/multipage/semantics.html#meta-robots"

@@ -7,7 +7,7 @@ status: optional
 order: 30
 appliesTo: [all]
 relatedSlugs: [well-known-overview]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "OpenID Connect Discovery 1.0"
     url: "https://openid.net/specs/openid-connect-discovery-1_0.html"

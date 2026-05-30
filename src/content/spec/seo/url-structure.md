@@ -7,7 +7,7 @@ status: recommended
 order: 50
 appliesTo: [all]
 relatedSlugs: [canonical-url, redirects, internal-linking, breadcrumbs]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 3986 — Uniform Resource Identifier (URI): Generic Syntax"
     url: "https://www.rfc-editor.org/rfc/rfc3986"

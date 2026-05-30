@@ -7,7 +7,7 @@ status: recommended
 order: 80
 appliesTo: [all]
 relatedSlugs: [theme-color, open-graph, html-lang]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "MDN — Link types: icon"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/icon"

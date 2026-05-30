@@ -7,7 +7,7 @@ status: recommended
 order: 35
 appliesTo: [all]
 relatedSlugs: [well-known-overview, link-headers, llms-txt, machine-readable-formats, a2a-agent-cards]
-updated: "2026-05-29"
+updated: "2026-05-29T11:27:49.000Z"
 sources:
   - title: "RFC 9727 — Publishing Organisation API Information"
     url: "https://www.rfc-editor.org/rfc/rfc9727"

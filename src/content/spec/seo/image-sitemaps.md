@@ -7,7 +7,7 @@ status: optional
 order: 40
 appliesTo: [all]
 relatedSlugs: [xml-sitemaps, sitemap-index, structured-data]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Image sitemaps"
     url: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps"

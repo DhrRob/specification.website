@@ -7,7 +7,7 @@ status: recommended
 order: 50
 appliesTo: [all]
 relatedSlugs: [cookie-consent, third-party-scripts, data-minimization, privacy-policy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "EDPB — 101 complaints concerning EU-U.S. data transfers (Google Analytics)"
     url: "https://edpb.europa.eu/news/news/2022/austrian-dpa-decision-101-complaints-issued_en"

@@ -7,7 +7,7 @@ status: recommended
 order: 85
 appliesTo: [all]
 relatedSlugs: [critical-css, core-web-vitals, preload-prefetch-preconnect, resource-hints, lazy-loading]
-updated: "2026-05-29"
+updated: "2026-05-29T09:55:11.000Z"
 sources:
   - title: "HTML Living Standard — The script element"
     url: "https://html.spec.whatwg.org/multipage/scripting.html#the-script-element"

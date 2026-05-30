@@ -7,7 +7,7 @@ status: recommended
 order: 30
 appliesTo: [all]
 relatedSlugs: [xml-sitemaps, image-sitemaps, robots-txt]
-updated: "2026-05-29"
+updated: "2026-05-29T19:18:37.253Z"
 sources:
   - title: "Sitemaps XML format — sitemap index files"
     url: "https://www.sitemaps.org/protocol.html#index"
@@ -19,7 +19,7 @@ sources:
 
 ## What it is
 
-A sitemap index is an XML file that lists other sitemap files. Its root element is `<sitemapindex>` and each child `<sitemap>` has a `<loc>` pointing at a child sitemap, with an optional `<lastmod>`.
+A sitemap index is an XML file that lists [other sitemap files](/spec/seo/xml-sitemaps/). Its root element is `<sitemapindex>` and each child `<sitemap>` has a `<loc>` pointing at a child sitemap, with an optional `<lastmod>`.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

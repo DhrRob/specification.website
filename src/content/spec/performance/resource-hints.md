@@ -7,7 +7,7 @@ status: recommended
 order: 100
 appliesTo: [all]
 relatedSlugs: [preload-prefetch-preconnect, font-loading, critical-css]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "W3C — Resource Hints"
     url: "https://www.w3.org/TR/resource-hints/"

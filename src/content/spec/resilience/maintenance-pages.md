@@ -7,7 +7,7 @@ status: recommended
 order: 20
 appliesTo: [all]
 relatedSlugs: [error-pages, monitoring-uptime]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 9110 — HTTP Semantics: 503 Service Unavailable"
     url: "https://www.rfc-editor.org/rfc/rfc9110.html#name-503-service-unavailable"

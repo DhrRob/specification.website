@@ -7,7 +7,7 @@ status: required
 order: 125
 appliesTo: [all]
 relatedSlugs: [focus-indicators, semantic-html, color-contrast]
-updated: "2026-05-29"
+updated: "2026-05-29T10:57:27.000Z"
 sources:
   - title: "WCAG 2.3.3 — Animation from Interactions (Level AAA)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"

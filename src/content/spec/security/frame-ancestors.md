@@ -7,7 +7,7 @@ status: required
 order: 60
 appliesTo: [all]
 relatedSlugs: [content-security-policy, x-content-type-options, permissions-policy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "OWASP — Clickjacking Defense Cheat Sheet"
     url: "https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html"

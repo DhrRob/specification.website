@@ -7,13 +7,14 @@ import { site } from '~/lib/site';
 <BaseLayout
   title="Contribute"
   description="How to propose new topics, fixes, and additions to the Website Specification."
+  ogImage="/og/contribute.png"
 >
   <div class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Contribute' }]} />
     <article class="prose-spec mt-6">
       <h1 class="text-4xl font-bold tracking-tight text-ink-900">Contribute</h1>
       <p>
-        The spec is open. Issues, pull requests, and even straight-up disagreements are welcome. Three rules.
+        The spec is <a href={site.repo} rel="external">open on GitHub</a>. Issues, pull requests, and even straight-up disagreements are welcome. Three rules.
       </p>
 
       <h2>1. Cite your sources</h2>

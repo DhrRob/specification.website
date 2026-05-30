@@ -7,7 +7,7 @@ status: recommended
 order: 55
 appliesTo: [all]
 relatedSlugs: [cache-control, canonical-url, speculation-rules, view-transitions, url-structure]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "No-Vary-Search — WICG editor's draft"
     url: "https://wicg.github.io/nav-speculation/no-vary-search.html"

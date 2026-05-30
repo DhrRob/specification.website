@@ -7,7 +7,7 @@ status: required
 order: 20
 appliesTo: [all]
 relatedSlugs: [doctype, meta-charset, title]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "HTML Living Standard — The lang and xml:lang attributes"
     url: "https://html.spec.whatwg.org/multipage/dom.html#the-lang-and-xml:lang-attributes"

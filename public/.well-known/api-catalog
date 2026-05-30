@@ -28,6 +28,13 @@
           "title": "URL sitemap"
         }
       ],
+      "https://specification.website/schemas/schemamap/0.1#index": [
+        {
+          "href": "https://specification.website/schemamap.xml",
+          "type": "application/xml",
+          "title": "Schemamap index — discoverable JSON-LD endpoints per resource"
+        }
+      ],
       "service-meta": [
         {
           "href": "https://specification.website/.well-known/security.txt",

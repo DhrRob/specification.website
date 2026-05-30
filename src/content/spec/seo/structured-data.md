@@ -6,8 +6,8 @@ summary: "Machine-readable annotations that describe the content of a page using
 status: recommended
 order: 100
 appliesTo: [all]
-relatedSlugs: [breadcrumbs, heading-hierarchy, xml-sitemaps, canonical-url]
-updated: "2026-05-29"
+relatedSlugs: [breadcrumbs, heading-hierarchy, xml-sitemaps, canonical-url, schemamap]
+updated: "2026-05-29T14:13:42.000Z"
 sources:
   - title: "Schema.org"
     url: "https://schema.org/"

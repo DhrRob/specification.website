@@ -7,7 +7,7 @@ status: optional
 order: 85
 appliesTo: [all]
 relatedSlugs: [link-headers, mcp-and-tool-discovery, dnssec, well-known-overview, a2a-agent-cards]
-updated: "2026-05-29"
+updated: "2026-05-29T11:27:49.000Z"
 sources:
   - title: "draft-mozleywilliams-dnsop-dnsaid — DNS for AI Discovery"
     url: "https://datatracker.ietf.org/doc/draft-mozleywilliams-dnsop-dnsaid/"

@@ -7,7 +7,7 @@ status: optional
 order: 50
 appliesTo: [all]
 relatedSlugs: [well-known-overview, assetlinks-json]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Apple — Supporting associated domains"
     url: "https://developer.apple.com/documentation/xcode/supporting-associated-domains"

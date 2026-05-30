@@ -7,7 +7,7 @@ status: required
 order: 120
 appliesTo: [all]
 relatedSlugs: [foundations/html-lang, semantic-html]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "WCAG 3.1.1 — Language of Page (Level A)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html"

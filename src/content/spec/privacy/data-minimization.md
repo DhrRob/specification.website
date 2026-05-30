@@ -7,7 +7,7 @@ status: recommended
 order: 60
 appliesTo: [all]
 relatedSlugs: [privacy-policy, analytics-privacy, third-party-scripts]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "GDPR Article 5 — Principles relating to processing of personal data"
     url: "https://gdpr-info.eu/art-5-gdpr/"

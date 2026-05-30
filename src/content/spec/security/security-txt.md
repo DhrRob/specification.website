@@ -7,7 +7,7 @@ status: recommended
 order: 40
 appliesTo: [all]
 relatedSlugs: [well-known-uris-overview, https-tls, hsts]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 9116 — A File Format to Aid in Security Vulnerability Disclosure"
     url: "https://www.rfc-editor.org/rfc/rfc9116"

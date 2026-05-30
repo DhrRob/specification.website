@@ -7,7 +7,7 @@ status: required
 order: 140
 appliesTo: [all]
 relatedSlugs: [semantic-html, aria-usage]
-updated: "2026-05-29"
+updated: "2026-05-29T10:57:27.000Z"
 sources:
   - title: "WCAG 2.2 — 1.3.1 Info and Relationships (Level A)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"

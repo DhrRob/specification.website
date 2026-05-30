@@ -7,7 +7,7 @@ status: required
 order: 145
 appliesTo: [all]
 relatedSlugs: [keyboard-navigation, focus-indicators, empty-links-buttons]
-updated: "2026-05-29"
+updated: "2026-05-29T10:57:27.000Z"
 sources:
   - title: "WCAG 2.5.8 — Target Size (Minimum) Level AA"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"

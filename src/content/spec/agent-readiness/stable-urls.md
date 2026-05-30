@@ -7,7 +7,7 @@ status: required
 order: 50
 appliesTo: [all]
 relatedSlugs: [agent-readiness-overview, robots-txt, structured-data-for-agents]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Cool URIs don't change"
     url: "https://www.w3.org/Provider/Style/URI"

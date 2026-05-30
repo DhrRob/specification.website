@@ -7,7 +7,7 @@ status: recommended
 order: 70
 appliesTo: [all]
 relatedSlugs: [title, meta-description, open-graph, no-vary-search]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "RFC 6596 — The Canonical Link Relation"
     url: "https://www.rfc-editor.org/rfc/rfc6596"

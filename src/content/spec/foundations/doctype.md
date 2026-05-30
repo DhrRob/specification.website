@@ -7,7 +7,7 @@ status: required
 order: 10
 appliesTo: [all]
 relatedSlugs: [html-lang, meta-charset, meta-viewport]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "HTML Living Standard — The DOCTYPE"
     url: "https://html.spec.whatwg.org/multipage/syntax.html#the-doctype"

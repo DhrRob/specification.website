@@ -7,7 +7,7 @@ status: avoid
 order: 130
 appliesTo: [all]
 relatedSlugs: [aria-usage, semantic-html, keyboard-navigation, color-contrast]
-updated: "2026-05-29"
+updated: "2026-05-29T10:57:27.000Z"
 sources:
   - title: "Overlay Fact Sheet"
     url: "https://overlayfactsheet.com/"

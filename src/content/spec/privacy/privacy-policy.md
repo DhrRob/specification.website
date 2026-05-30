@@ -7,7 +7,7 @@ status: required
 order: 10
 appliesTo: [all]
 relatedSlugs: [cookie-consent, data-minimization, analytics-privacy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "GDPR Articles 13 and 14 — Information to be provided"
     url: "https://gdpr-info.eu/art-13-gdpr/"

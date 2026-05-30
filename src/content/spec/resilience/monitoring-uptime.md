@@ -7,7 +7,7 @@ status: recommended
 order: 50
 appliesTo: [all]
 relatedSlugs: [error-pages, maintenance-pages]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Google SRE Book — Monitoring Distributed Systems"
     url: "https://sre.google/sre-book/monitoring-distributed-systems/"

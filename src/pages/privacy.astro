@@ -8,6 +8,7 @@ const updated = '2026-05-29';
 <BaseLayout
   title="Privacy policy"
   description="What this site collects, what it sends, and what it stores. The short answer: almost nothing."
+  ogImage="/og/privacy.png"
 >
   <div class="mx-auto max-w-3xl px-4 py-10">
     <Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy' }]} />
@@ -29,8 +30,10 @@ const updated = '2026-05-29';
       </p>
 
       <h2 id="what-we-collect">What we collect</h2>
-      <p>The site sets <strong>no cookies</strong> and stores nothing in your browser. The only data we
-      collect is aggregate page-view analytics via <a href="https://plausible.io" rel="external">Plausible</a>:</p>
+      <p>The site sets <strong>no cookies</strong> and stores nothing in your browser. For ordinary
+      browser visits, the only data we collect is aggregate page-view analytics via
+      <a href="https://plausible.io" rel="external">Plausible</a> (separate server-side aggregate logging
+      for crawlers and MCP / A2A calls is described under <a href="#logs-and-hosting">Logs and hosting</a>):</p>
       <ul>
         <li>URL of the page you loaded.</li>
         <li>HTTP referrer (which site sent you, if any).</li>
@@ -64,6 +67,20 @@ const updated = '2026-05-29';
         normal part of serving the site and protecting it from abuse, governed by Cloudflare's own
         <a href="https://www.cloudflare.com/privacypolicy/" rel="external">privacy policy</a>. We do not
         receive a copy of that data and do not use it for analytics.
+      </p>
+      <p>
+        We do record aggregate request metadata for two non-human traffic streams in
+        <a href="https://developers.cloudflare.com/analytics/analytics-engine/" rel="external">Cloudflare Analytics Engine</a>
+        — an internal dashboard at <code>/admin/stats</code> (gated by Cloudflare Access) reads it:
+      </p>
+      <ul>
+        <li><strong>Crawler / AI-agent traffic:</strong> when a request matches a known AI / LLM / search crawler User-Agent, carries a <code>Signature-Agent</code> header, is verified-bot per Cloudflare, or asks for <code>text/markdown</code>, we record the bot name, path, country, method, referer, and User-Agent (truncated). No IP address is stored.</li>
+        <li><strong>MCP / A2A calls</strong> to <code>mcp.specification.website</code>: we record the JSON-RPC method, tool name, the first 500 bytes of arguments, client name/version, protocol version, country, and User-Agent (truncated). No IP address is stored.</li>
+      </ul>
+      <p>
+        Neither stream covers ordinary browser visits. Both are kept to understand which agents use the
+        spec and the MCP server, and how. The data lives in Cloudflare's Analytics Engine under our
+        account; retention follows Cloudflare's defaults.
       </p>
 
       <h2 id="content-hosting">GitHub</h2>

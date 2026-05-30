@@ -7,7 +7,7 @@ status: required
 order: 70
 appliesTo: [all]
 relatedSlugs: [aria-usage, skip-links, keyboard-navigation]
-updated: "2026-05-29"
+updated: "2026-05-29T10:57:27.000Z"
 sources:
   - title: "WCAG 1.3.1 — Info and Relationships (Level A)"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"

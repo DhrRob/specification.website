@@ -12,6 +12,7 @@ export const site = {
     handle: 'jdevalk',
   },
   themeColor: '#15803d',
+  themeColorDark: '#0e0e13',
   twitter: '@jdevalk',
   plausibleDomain: 'specification.website',
   plausibleHost: 'https://plausible.io',

@@ -7,7 +7,7 @@ status: required
 order: 50
 appliesTo: [all]
 relatedSlugs: [content-security-policy, frame-ancestors, referrer-policy]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "MDN — X-Content-Type-Options"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options"

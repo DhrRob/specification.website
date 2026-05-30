@@ -1,6 +1,11 @@
 # The Website Specification
 
-A platform-agnostic specification of what a good website should do. From `<title>` to `/.well-known/security.txt`, from WCAG contrast to `llms.txt` — written for humans and agents, MIT licensed, open for pull requests.
+[![CI](https://github.com/jdevalk/specification.website/actions/workflows/ci.yml/badge.svg)](https://github.com/jdevalk/specification.website/actions/workflows/ci.yml)
+[![Code licence: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
+[![Content licence: CC BY 4.0](https://img.shields.io/badge/content-CC%20BY%204.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![Deployed on Cloudflare Pages](https://img.shields.io/badge/deploy-Cloudflare%20Pages-orange.svg)](https://specification.website)
+
+The website specification — from `<title>` to `/.well-known/security.txt`, from WCAG contrast to `llms.txt`. Platform-agnostic, sourced on every page, written for humans and agents. MIT licensed, open for pull requests.
 
 **Live site:** <https://specification.website>
 **MCP server:** <https://mcp.specification.website/mcp>

@@ -7,7 +7,7 @@ status: recommended
 order: 105
 appliesTo: [all]
 relatedSlugs: [speculation-rules, core-web-vitals, critical-css]
-updated: "2026-05-29"
+updated: "2026-05-29T17:40:31.000Z"
 sources:
   - title: "MDN — View Transition API"
     url: "https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API"
@@ -48,6 +48,8 @@ document.startViewTransition(() => {
 ```
 
 When the user navigates from page A to page B and both pages have this rule, the browser captures A, replaces it with B, and cross-fades. No JavaScript required.
+
+**This site ships it.** [`global.css`](https://github.com/jdevalk/specification.website/blob/main/src/styles/global.css) carries `@view-transition { navigation: auto }`, so cross-document navigations between any two pages on `specification.website` cross-fade on supporting browsers. The matching `prefers-reduced-motion: reduce` rule zeroes `animation-duration` on the view-transition pseudo-elements, so reduced-motion users get an instant swap. Pairs with our [Speculation Rules](/spec/performance/speculation-rules/) prerender — the next page is already in memory, then it animates in.
 
 You shape the animation with the `::view-transition-*` pseudo-elements:
 

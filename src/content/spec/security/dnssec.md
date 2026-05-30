@@ -7,7 +7,7 @@ status: optional
 order: 120
 appliesTo: [all]
 relatedSlugs: [caa-records, https-tls, hsts]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 4033 — DNS Security Introduction and Requirements"
     url: "https://www.rfc-editor.org/rfc/rfc4033"

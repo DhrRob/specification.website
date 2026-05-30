@@ -7,7 +7,7 @@ status: recommended
 order: 40
 appliesTo: [all]
 relatedSlugs: [resource-hints, core-web-vitals, font-loading]
-updated: "2026-05-29"
+updated: "2026-05-29T20:27:54.000Z"
 sources:
   - title: "MDN — <link>: The External Resource Link element"
     url: "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link"
@@ -50,7 +50,7 @@ Used badly, the same hints **harm** performance by contending for bandwidth with
 
 **Preload the LCP image.** If your LCP is a hero image, preload it. Combine with `fetchpriority="high"` so it jumps the queue. Do not preload images that already appear early in the HTML — the preload scanner finds them anyway.
 
-**Preload critical fonts.** Fonts requested from inside CSS are discovered late. Preload them with `as="font" type="font/woff2" crossorigin`. The `crossorigin` attribute is mandatory even for same-origin fonts.
+**Preload critical fonts — selectively.** Fonts requested from inside CSS are discovered late, so preloading shortens the path: `as="font" type="font/woff2" crossorigin`. The `crossorigin` attribute is mandatory even for same-origin fonts. The preload competes with critical CSS for bandwidth though, so reserve it for fonts that style above-the-fold text, and always pair with `font-display: swap` or `optional` — see [Web font loading](/spec/performance/font-loading/) for the full tradeoff.
 
 **Preconnect to third-party origins.** If you load images from a CDN, fonts from Google, or analytics from a third party, preconnect saves the TCP+TLS handshake (~100–300ms). Use `crossorigin` for resources fetched with CORS (fonts, fetch, modules).
 

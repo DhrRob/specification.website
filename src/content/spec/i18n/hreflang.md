@@ -6,8 +6,8 @@ summary: "hreflang tells search engines which language or regional version of a 
 status: recommended
 order: 10
 appliesTo: [all]
-relatedSlugs: [lang-attribute, locale-content, rtl-support]
-updated: "2026-05-29"
+relatedSlugs: [lang-attribute, locale-content, rtl-support, international-url-structure, sitemap-hreflang, localised-metadata, language-switcher, avoid-auto-geo-redirects]
+updated: "2026-05-29T18:54:03.000Z"
 sources:
   - title: "Google Search Central — Localized versions of your pages"
     url: "https://developers.google.com/search/docs/specialized/international/localized-versions"

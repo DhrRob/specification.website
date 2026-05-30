@@ -20,6 +20,7 @@ all.sort((a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.d
 <BaseLayout
   title={cat.title}
   description={cat.summary}
+  ogImage={`/og/spec/${category}.png`}
 >
   <div class="mx-auto max-w-6xl px-4 py-10">
     <Breadcrumbs

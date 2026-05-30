@@ -23,6 +23,10 @@ import {
 import { handleA2aRpc, AGENT_CARD } from './a2a';
 import type { Manifest, RpcRequest, RpcResponse } from './types';
 
+interface Env {
+  MCP_LOG?: AnalyticsEngineDataset;
+}
+
 const manifest = data as unknown as Manifest;
 
 const PROTOCOL_VERSION = '2025-03-26';
@@ -231,7 +235,7 @@ function agentCardResponse(): Response {
   return new Response(JSON.stringify(AGENT_CARD, null, 2), { headers: JSON_HEADERS });
 }
 
-async function handleA2a(request: Request): Promise<Response> {
+async function handleA2a(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') {
     return new Response(
       JSON.stringify(err(null, -32600, 'A2A endpoint requires POST with a JSON-RPC body.')),
@@ -249,18 +253,25 @@ async function handleA2a(request: Request): Promise<Response> {
   }
   if (Array.isArray(body)) {
     const responses = body
-      .map((r) => handleA2aRpc(manifest, r as RpcRequest))
+      .map((r) => {
+        const req = r as RpcRequest;
+        const resp = handleA2aRpc(manifest, req);
+        logMcpCall(env, request, req, resp, 'a2a');
+        return resp;
+      })
       .filter((r): r is RpcResponse => r !== null);
     return new Response(JSON.stringify(responses), { headers: JSON_HEADERS });
   }
-  const response = handleA2aRpc(manifest, body as RpcRequest);
+  const req = body as RpcRequest;
+  const response = handleA2aRpc(manifest, req);
+  logMcpCall(env, request, req, response, 'a2a');
   if (response === null) {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
   return new Response(JSON.stringify(response), { headers: JSON_HEADERS });
 }
 
-async function handleMcp(request: Request): Promise<Response> {
+async function handleMcp(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') {
     return new Response(
       JSON.stringify(err(null, -32600, 'MCP endpoint requires POST with a JSON-RPC body.')),
@@ -280,11 +291,18 @@ async function handleMcp(request: Request): Promise<Response> {
   // Batch or single
   if (Array.isArray(body)) {
     const responses = body
-      .map((r) => handleRpc(r as RpcRequest))
+      .map((r) => {
+        const req = r as RpcRequest;
+        const resp = handleRpc(req);
+        logMcpCall(env, request, req, resp, 'remote');
+        return resp;
+      })
       .filter((r): r is RpcResponse => r !== null);
     return new Response(JSON.stringify(responses), { headers: JSON_HEADERS });
   }
-  const response = handleRpc(body as RpcRequest);
+  const req = body as RpcRequest;
+  const response = handleRpc(req);
+  logMcpCall(env, request, req, response, 'remote');
   if (response === null) {
     // Pure notification — no response
     return new Response(null, { status: 204, headers: CORS_HEADERS });
@@ -292,8 +310,112 @@ async function handleMcp(request: Request): Promise<Response> {
   return new Response(JSON.stringify(response), { headers: JSON_HEADERS });
 }
 
+// --- Usage logging --------------------------------------------------------
+
+// Writes one data point per MCP / A2A call to the MCP_LOG Analytics Engine
+// dataset, which the Pages /admin/stats dashboard queries. Never throws.
+//
+// The stateless server has no sessions, so client identity is asymmetric:
+// only `initialize` carries clientInfo (name/version); `tools/call` does not.
+// Both shapes share one dataset — `initialize` rows give the client mix,
+// `tools/call` rows give the tool mix and the actual query arguments.
+function logMcpCall(
+  env: Env,
+  httpReq: Request,
+  message: RpcRequest | null | undefined,
+  response: RpcResponse | null,
+  surface: 'remote' | 'a2a',
+): void {
+  const dataset = env.MCP_LOG;
+  if (!dataset) return; // binding not configured (local dev) — silently skip
+  try {
+    const method = (message && message.method) || '';
+    if (!method || method === 'ping') return; // ping is keepalive noise
+    if (method.startsWith('notifications/')) return; // pure notifications
+
+    const params = (message && message.params) || {};
+
+    // Channel attribution: an install URL like /mcp?ref=hackernews carries
+    // its `ref` on every request, so launch-channel usage is distinguishable.
+    let ref = '';
+    try {
+      ref = (new URL(httpReq.url).searchParams.get('ref') || '').slice(0, 60);
+    } catch {
+      ref = '';
+    }
+
+    let toolName = '';
+    let args = '';
+    let clientName = '';
+    let clientVersion = '';
+    let isError = '';
+
+    if (method === 'tools/call') {
+      toolName = String((params as Record<string, unknown>).name || '');
+      try {
+        args = JSON.stringify((params as Record<string, unknown>).arguments || {}).slice(0, 500);
+      } catch {
+        args = '';
+      }
+      if (response && 'error' in response) {
+        isError = '1';
+      } else if (
+        response &&
+        'result' in response &&
+        response.result &&
+        typeof response.result === 'object' &&
+        (response.result as { isError?: boolean }).isError
+      ) {
+        isError = '1';
+      }
+    } else if (method === 'initialize') {
+      const clientInfo = ((params as Record<string, unknown>).clientInfo || {}) as {
+        name?: unknown;
+        version?: unknown;
+      };
+      clientName = String(clientInfo.name || '');
+      clientVersion = String(clientInfo.version || '');
+    } else if (method === 'message/send') {
+      // A2A: surface the user text as args so the dashboard shows what
+      // was asked, mirroring tools/call.
+      try {
+        args = JSON.stringify(params).slice(0, 500);
+      } catch {
+        args = '';
+      }
+    }
+
+    const protocol =
+      httpReq.headers.get('mcp-protocol-version') ||
+      (method === 'initialize'
+        ? String((params as Record<string, unknown>).protocolVersion || '')
+        : '');
+    const identity = method === 'tools/call' && toolName ? toolName : method;
+    const cf = (httpReq as Request & { cf?: IncomingRequestCfProperties }).cf;
+
+    dataset.writeDataPoint({
+      blobs: [
+        method, // blob1
+        toolName, // blob2
+        args, // blob3
+        clientName, // blob4
+        clientVersion, // blob5
+        protocol, // blob6
+        (httpReq.headers.get('user-agent') || '').slice(0, 300), // blob7
+        cf?.country || '', // blob8
+        isError, // blob9
+        surface, // blob10 — 'remote' (MCP) or 'a2a'
+        ref, // blob11 — channel ref from /mcp?ref=… install URLs
+      ],
+      indexes: [identity],
+    });
+  } catch {
+    // Never break a request because logging failed.
+  }
+}
+
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
     if (request.method === 'OPTIONS') {
@@ -305,10 +427,10 @@ export default {
         return htmlLanding();
       case '/mcp':
       case '/mcp/':
-        return handleMcp(request);
+        return handleMcp(request, env);
       case '/a2a/v1':
       case '/a2a/v1/':
-        return handleA2a(request);
+        return handleA2a(request, env);
       case '/.well-known/mcp/server-card.json':
         return metadata();
       case '/.well-known/agent-card.json':
@@ -322,4 +444,4 @@ export default {
         });
     }
   },
-} satisfies ExportedHandler;
+} satisfies ExportedHandler<Env>;

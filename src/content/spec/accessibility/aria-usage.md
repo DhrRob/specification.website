@@ -7,7 +7,7 @@ status: recommended
 order: 80
 appliesTo: [all]
 relatedSlugs: [semantic-html, form-labels, keyboard-navigation]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "ARIA Authoring Practices Guide — Read Me First"
     url: "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"

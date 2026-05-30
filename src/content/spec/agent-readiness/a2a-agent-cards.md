@@ -7,7 +7,7 @@ status: optional
 order: 82
 appliesTo: [all]
 relatedSlugs: [agent-readiness-overview, mcp-and-tool-discovery, agent-skills-discovery, machine-readable-formats, link-headers, api-catalog, dns-aid]
-updated: "2026-05-29"
+updated: "2026-05-29T11:27:49.000Z"
 sources:
   - title: "A2A Protocol — Specification"
     url: "https://a2a-protocol.org/latest/specification/"

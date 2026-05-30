@@ -7,7 +7,7 @@ status: required
 order: 20
 appliesTo: [all]
 relatedSlugs: [https-tls, content-security-policy, caa-records]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 6797 — HTTP Strict Transport Security (HSTS)"
     url: "https://www.rfc-editor.org/rfc/rfc6797"

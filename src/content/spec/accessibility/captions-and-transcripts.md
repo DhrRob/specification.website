@@ -7,7 +7,7 @@ status: required
 order: 135
 appliesTo: [all]
 relatedSlugs: [image-alt-text, semantic-html, reduced-motion]
-updated: "2026-05-29"
+updated: "2026-05-29T10:57:27.000Z"
 sources:
   - title: "WCAG 1.2.2 — Captions (Prerecorded) Level A"
     url: "https://www.w3.org/WAI/WCAG22/Understanding/captions-prerecorded.html"

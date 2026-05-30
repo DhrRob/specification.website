@@ -7,7 +7,7 @@ status: required
 order: 50
 appliesTo: [all]
 relatedSlugs: [meta-description, canonical-url, open-graph]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "HTML Living Standard — The title element"
     url: "https://html.spec.whatwg.org/multipage/semantics.html#the-title-element"

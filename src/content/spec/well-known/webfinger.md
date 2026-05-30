@@ -7,7 +7,7 @@ status: optional
 order: 40
 appliesTo: [all]
 relatedSlugs: [well-known-overview, nodeinfo]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "RFC 7033 — WebFinger"
     url: "https://www.rfc-editor.org/rfc/rfc7033"

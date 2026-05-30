@@ -7,7 +7,7 @@ status: optional
 order: 30
 appliesTo: [all]
 relatedSlugs: [llms-txt, markdown-source-endpoints, agent-readiness-overview, machine-readable-formats]
-updated: "2026-05-29"
+updated: "2026-05-29T09:45:15.000Z"
 sources:
   - title: "The /llms.txt proposal"
     url: "https://llmstxt.org/"

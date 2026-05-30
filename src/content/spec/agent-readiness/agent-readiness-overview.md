@@ -7,7 +7,7 @@ status: recommended
 order: 10
 appliesTo: [all]
 relatedSlugs: [llms-txt, markdown-source-endpoints, robots-for-ai-crawlers, stable-urls, structured-data-for-agents, machine-readable-formats, agent-skills-discovery, mcp-and-tool-discovery, a2a-agent-cards, web-bot-auth, webmcp, nlweb]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "Is It Agent Ready?"
     url: "https://isitagentready.com/"

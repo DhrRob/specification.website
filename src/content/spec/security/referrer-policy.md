@@ -7,7 +7,7 @@ status: recommended
 order: 70
 appliesTo: [all]
 relatedSlugs: [content-security-policy, permissions-policy, cookie-attributes]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Referrer Policy (W3C Editor's Draft)"
     url: "https://www.w3.org/TR/referrer-policy/"

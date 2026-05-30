@@ -1,0 +1,21 @@
+# Cloudflare Pages — bindings for specification.website.
+#
+# Pages itself is deployed via the Pages dashboard's Git integration (see
+# CLAUDE.md). This file only carries the bindings the Functions in
+# /functions/ need; they're picked up at build time on the Pages side.
+#
+# The MCP Worker in /mcp/ has its own wrangler.toml — deploy it separately
+# with `cd mcp && npm run deploy`.
+
+name = "specification-website"
+compatibility_date = "2026-05-29"
+pages_build_output_dir = "./dist"
+
+# Analytics Engine datasets for the /admin/stats dashboard.
+# AGENT_LOG is written by functions/_shared/bot-detect.ts (crawler traffic);
+# MCP_LOG is written by mcp/src/index.ts in the separate Worker
+# (mcp.specification.website). The dashboard queries both at the account
+# level via the Cloudflare Analytics Engine SQL API.
+[[analytics_engine_datasets]]
+binding = "AGENT_LOG"
+dataset = "sw_agent_log"

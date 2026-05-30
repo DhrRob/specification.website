@@ -7,7 +7,7 @@ status: optional
 order: 20
 appliesTo: [all]
 relatedSlugs: [well-known-overview]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "A Well-Known URL for Changing Passwords"
     url: "https://w3c.github.io/webappsec-change-password-url/"

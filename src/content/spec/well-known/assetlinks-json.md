@@ -7,7 +7,7 @@ status: optional
 order: 60
 appliesTo: [all]
 relatedSlugs: [well-known-overview, apple-app-site-association]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "Digital Asset Links — Verify Android App Links"
     url: "https://developer.android.com/training/app-links/verify-android-applinks"

@@ -7,7 +7,7 @@ status: recommended
 order: 70
 appliesTo: [all]
 relatedSlugs: [agent-readiness-overview, markdown-source-endpoints, llms-txt, llms-full-txt, xml-sitemaps]
-updated: "2026-05-29"
+updated: "2026-05-29T09:45:15.000Z"
 sources:
   - title: "RSS 2.0 Specification"
     url: "https://www.rssboard.org/rss-specification"

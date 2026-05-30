@@ -7,7 +7,7 @@ status: recommended
 order: 80
 appliesTo: [all]
 relatedSlugs: [core-web-vitals, font-loading, preload-prefetch-preconnect]
-updated: "2026-05-29"
+updated: "2026-05-29T09:13:20.000Z"
 sources:
   - title: "web.dev — Extract critical CSS"
     url: "https://web.dev/articles/extract-critical-css"

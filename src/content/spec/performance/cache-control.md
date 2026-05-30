@@ -7,7 +7,7 @@ status: required
 order: 50
 appliesTo: [all]
 relatedSlugs: [compression, core-web-vitals, no-vary-search]
-updated: "2026-05-29"
+updated: "2026-05-29T12:14:17.000Z"
 sources:
   - title: "RFC 9111 — HTTP Caching"
     url: "https://www.rfc-editor.org/rfc/rfc9111"
