@@ -229,6 +229,14 @@ body {
   border-radius: 0.125rem;
 }
 
+/* Button & interactive summary cursor reset */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  cursor: pointer;
+}
+
 /* Print */
 @media print {
   header, footer, nav, .no-print { display: none; }
